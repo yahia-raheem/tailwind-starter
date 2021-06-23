@@ -1,1 +1,189 @@
-!function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return e};return n.d(t,"a",t),t},n.o=function(e,t){return Object.prototype.hasOwnProperty.call(e,t)},n.p="",n(n.s=3)}([function(e,t,n){"use strict";n.d(t,"a",(function(){return r})),n.d(t,"b",(function(){return o}));var r=function(e,t){if(void 0!==t.element)return new IntersectionObserver((function(n,r){n.forEach((function(n){n.target;n.isIntersecting&&e(t)}))}),{threshold:.5}).observe(t.element)},o=function(e){var t=e.element,n=e.index,r=t.getAttribute("src"),o=t.getAttribute("id"),i=t.getAttribute("width"),c=t.getAttribute("height"),a=t.getAttribute("class"),u=new XMLHttpRequest;u.onreadystatechange=function(){if(4==this.readyState&&200==this.status){var e=this.responseText.trim(),r=document.createElement("div");r.innerHTML=e;var u=r.querySelector("svg");null!=u&&(null!=o?u.setAttribute("id",o):u.setAttribute("id","replaced-svg-".concat(n)),u.removeAttribute("xmlns:a"),u.setAttribute("class",a),null!=i&&u.setAttribute("width",i),null!=c&&u.setAttribute("height",c),t.parentNode.replaceChild(u,t))}},u.open("GET",r,!0),u.send()}},function(e,t,n){"use strict";n(0);document.addEventListener("DOMContentLoaded",(function(){var e=document.querySelectorAll("[data-trim]"),t=(document.querySelectorAll(".det-res-img"),document.querySelectorAll("[data-replace]"),document.querySelectorAll("[data-mobilesheet]"),screen.width,document.querySelectorAll("[data-removeChildTag]"),document.querySelectorAll("[data-aspectRatio]")),n=document.querySelectorAll("[data-color]"),o=document.querySelectorAll(".menu-icon"),i=document.querySelectorAll(".wpcf7 select");if(void 0!==i&&i.length>0&&i.forEach((function(e){""==e.value&&e.classList.add("untouched");var t=function(t){console.log("fired"),e.classList.remove("untouched"),n()},n=function(){e.removeEventListener("change",t)};e.addEventListener("change",t)})),void 0!==o&&o.length>0){var c=window.location.origin;o.forEach((function(e,t){var n=Array.from(e.classList).find((function(e){return/^icon-/.test(e)}));if(n){var r="".concat(c,"/wp-json/generaldata/v1/getimage/").concat(n.split("-")[1]),o=new XMLHttpRequest;o.onreadystatechange=function(){if(4==this.readyState&&200==this.status){var t=JSON.parse(this.responseText).trim(),r=document.createElement("div");r.innerHTML=t;var o=r.querySelector("img");e.prepend(o),e.classList.remove(n)}},o.open("GET",r,!0),o.send()}}))}void 0!==n&&n.length>0&&n.forEach((function(e){var t=e.getAttribute("data-color");e.style.setProperty("--elm-color",t)})),void 0!==e&&e.length>0&&e.forEach((function(e){var t=e.getAttribute("data-trim");e.innerHTML=e.innerHTML.length>t?e.innerHTML.substring(0,t)+"...":e.innerHTML,e.removeAttribute("data-trim")})),void 0!==t&&t.length>0&&(t.forEach((function(e){var t=e.offsetWidth,n=e.getAttribute("data-aspectRatio"),o=r(n,t);e.style.height="".concat(o,"px")})),window.addEventListener("resize",(function(){t.forEach((function(e){var t=e.offsetWidth,n=e.getAttribute("data-aspectRatio"),o=r(n,t);e.style.height="".concat(o,"px")}))})))}));var r=function(e,t){var n=e.split("/"),r=n[0],o=n[1];return parseInt(t)*parseInt(o)/parseInt(r)}},function(e,t,n){"use strict";var r=n(0);document.addEventListener("DOMContentLoaded",(function(){document.querySelectorAll(".style-svg").forEach((function(e,t){Object(r.a)(r.b,{element:e,index:t})}))}))},function(e,t,n){e.exports=n(4)},function(e,t,n){"use strict";n.r(t);n(1),n(5),n(2);document.addEventListener("DOMContentLoaded",(function(){}))},function(e,t){var n=!1,r=document.getElementById("mySidenav");document.addEventListener("DOMContentLoaded",(function(){var e=document.querySelector(".navbar-toggler"),t=document.querySelector(".closebtn");document.querySelectorAll(".mobile-menu .menu-item").forEach((function(e){e.addEventListener("click",(function(t){if(t.stopPropagation(),e.classList.contains("menu-item-has-children")){var n=e.querySelector(".sub-menu"),r=e.querySelectorAll(".menu-item").length;n.classList.contains("opened")?(e.classList.remove("child-menu-opened"),n.classList.remove("opened"),n.style.maxHeight=0):(e.classList.add("child-menu-opened"),n.classList.add("opened"),n.style.maxHeight="".concat(64*r,"px"))}}))})),e.addEventListener("click",(function(){o(),document.addEventListener("click",c),setTimeout((function(){n=!0}),1e3)})),t.addEventListener("click",(function(){i()}))}));var o=function(){r.style.width="100vw"},i=function(){r.style.width="0",n=!1,a()},c=function(e){!r.contains(e.target)&&n&&i()},a=function(){document.removeEventListener("click",c)}}]);
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, { enumerable: true, get: getter });
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// define __esModule on exports
+/******/ 	__webpack_require__.r = function(exports) {
+/******/ 		if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 			Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 		}
+/******/ 		Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 	};
+/******/
+/******/ 	// create a fake namespace object
+/******/ 	// mode & 1: value is a module id, require it
+/******/ 	// mode & 2: merge all properties of value into the ns
+/******/ 	// mode & 4: return value when already ns object
+/******/ 	// mode & 8|1: behave like require
+/******/ 	__webpack_require__.t = function(value, mode) {
+/******/ 		if(mode & 1) value = __webpack_require__(value);
+/******/ 		if(mode & 8) return value;
+/******/ 		if((mode & 4) && typeof value === 'object' && value && value.__esModule) return value;
+/******/ 		var ns = Object.create(null);
+/******/ 		__webpack_require__.r(ns);
+/******/ 		Object.defineProperty(ns, 'default', { enumerable: true, value: value });
+/******/ 		if(mode & 2 && typeof value != 'string') for(var key in value) __webpack_require__.d(ns, key, function(key) { return value[key]; }.bind(null, key));
+/******/ 		return ns;
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ })
+/************************************************************************/
+/******/ ({
+
+/***/ "./src/js/bundle.js":
+/*!**************************!*\
+  !*** ./src/js/bundle.js ***!
+  \**************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_sidebar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/sidebar */ "./src/js/components/sidebar.js");
+/* harmony import */ var _components_sidebar__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_components_sidebar__WEBPACK_IMPORTED_MODULE_0__);
+// import "./components/bootstrap-imports";
+// import "./components/my-navbar";
+// import "./components/navigator";
+// import "./components/helpers";
+ // import './components/shared';
+
+document.addEventListener("DOMContentLoaded", function () {});
+
+/***/ }),
+
+/***/ "./src/js/components/sidebar.js":
+/*!**************************************!*\
+  !*** ./src/js/components/sidebar.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var isOpen = false;
+var sideBar = document.getElementById("mySidenav");
+document.addEventListener("DOMContentLoaded", function () {
+  var togglebtn = document.querySelector(".navbar-toggler");
+  var closebtn = document.querySelector(".closebtn");
+  var sidemenuItems = document.querySelectorAll(".mobile-menu .menu-item");
+  sidemenuItems.forEach(function (item) {
+    item.addEventListener("click", function (e) {
+      e.stopPropagation();
+
+      if (item.classList.contains("menu-item-has-children")) {
+        var submenu = item.querySelector(".sub-menu");
+        var itemsNum = item.querySelectorAll(".menu-item").length;
+
+        if (submenu.classList.contains("opened")) {
+          item.classList.remove('child-menu-opened');
+          submenu.classList.remove("opened");
+          submenu.style.maxHeight = 0;
+        } else {
+          item.classList.add('child-menu-opened');
+          submenu.classList.add("opened");
+          submenu.style.maxHeight = "".concat(itemsNum * 64, "px");
+        }
+      }
+    });
+  });
+  togglebtn.addEventListener("click", function () {
+    openNav();
+    document.addEventListener("click", outsideClickListener);
+    setTimeout(function () {
+      isOpen = true;
+    }, 1000);
+  });
+  closebtn.addEventListener("click", function () {
+    closeNav();
+  });
+});
+
+var openNav = function openNav() {
+  sideBar.style.width = "100vw";
+};
+
+var closeNav = function closeNav() {
+  sideBar.style.width = "0";
+  isOpen = false;
+  removeClickListener();
+};
+
+var outsideClickListener = function outsideClickListener(event) {
+  if (!sideBar.contains(event.target) && isOpen) {
+    closeNav();
+  }
+};
+
+var removeClickListener = function removeClickListener() {
+  document.removeEventListener("click", outsideClickListener);
+};
+
+/***/ }),
+
+/***/ 0:
+/*!********************************!*\
+  !*** multi ./src/js/bundle.js ***!
+  \********************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(/*! /mnt/0CA504390CA50439/projects/sandbox/html/starter-tailwind/src/js/bundle.js */"./src/js/bundle.js");
+
+
+/***/ })
+
+/******/ });

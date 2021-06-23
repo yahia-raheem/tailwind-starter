@@ -13,28 +13,52 @@
         <h3 class="title">Main Menu</h3>
         <a href="javascript:void(0)" class="closebtn">&times;</a>
       </div>
-      <div class="flex w-max flex-col lg:flex-row ps-10 lg:ps-0">
-  <a class="nav-link me-2" href="/">home</a>
-  <a class="nav-link me-2" href="/">about</a>
-  <a class="nav-link me-2" href="/">contact us</a>
+      <div class="sidebar-content py-3">
+        <div class="flex w-max flex-col lg:flex-row ps-10 lg:ps-0">
+  <a class="nav-link me-2 text-white lg:text-black" href="/">home</a>
+  <a class="nav-link me-2 text-white lg:text-black" href="/">about</a>
+  <a class="nav-link me-2 text-white lg:text-black" href="/">contact us</a>
 </div>
-
+      </div>
     </div>
-    <div class="nav-container py-5">
+    <div class="nav-container py-4">
       <div class="container">
         <nav class="flex max-w-7xl w-full justify-between items-center">
           <nuxt-link class="navbar-brand" to="/"> tailwind </nuxt-link>
-          <button class="navbar-toggler block lg:hidden" type="button">
-            <span class="navbar-toggler-icon">menu</span>
+          <button
+            class="
+              navbar-toggler
+              block
+              lg:hidden
+              px-2
+              py-1
+              border-black border-solid border
+              rounded-sm
+            "
+            type="button"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
           </button>
 
           <div class="hidden lg:block">
             <div class="flex w-max flex-col lg:flex-row ps-10 lg:ps-0">
-  <a class="nav-link me-2" href="/">home</a>
-  <a class="nav-link me-2" href="/">about</a>
-  <a class="nav-link me-2" href="/">contact us</a>
+  <a class="nav-link me-2 text-white lg:text-black" href="/">home</a>
+  <a class="nav-link me-2 text-white lg:text-black" href="/">about</a>
+  <a class="nav-link me-2 text-white lg:text-black" href="/">contact us</a>
 </div>
-
           </div>
         </nav>
       </div>
