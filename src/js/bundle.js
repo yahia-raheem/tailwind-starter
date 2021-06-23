@@ -5,7 +5,4 @@
 import "./components/sidebar";
 // import './components/shared';
 
-
-
-document.addEventListener("DOMContentLoaded", () => { });
-
+document.addEventListener("DOMContentLoaded", () => {});

@@ -14,13 +14,15 @@ import fileinclude from "gulp-file-include";
 import replace from "gulp-replace";
 import cssnano from "cssnano";
 import Fiber from "fibers";
-import purgecss from 'gulp-purgecss';
-import safelist from './purgecss.safelist'
-import tailwindcss from 'tailwindcss'
-
+import purgecss from "gulp-purgecss";
+import safelist from "./purgecss.safelist";
+import tailwindcss from "tailwindcss";
+import browser from "browser-sync";
+import imagemin from "gulp-imagemin";
+import sherpa from "style-sherpa";
 
 const PRODUCTION = yargs.argv.prod;
-sass.compiler = require('sass');
+sass.compiler = require("sass");
 
 export const styles = () => {
   return src(["src/scss/bundle.scss", "src/scss/bundle-rtl.scss"])
@@ -28,22 +30,33 @@ export const styles = () => {
     .pipe(sass({ fiber: Fiber }).on("error", sass.logError))
     .pipe(gulpif(PRODUCTION, cleanCss({ level: 0 })))
     .pipe(gulpif(!PRODUCTION, postcss([tailwindcss()])))
-    .pipe(gulpif(PRODUCTION, postcss([tailwindcss(), cssnano({ preset: 'advanced' })])))
+    .pipe(
+      gulpif(
+        PRODUCTION,
+        postcss([tailwindcss(), cssnano({ preset: "advanced" })])
+      )
+    )
     .pipe(gulpif(!PRODUCTION, sourcemaps.write()))
     .pipe(dest("dist/css"));
 };
 
 export const stylePurge = () => {
-  return src(['dist/css/bundle.css', 'dist/css/bundle-rtl.css'])
-    .pipe(gulpif(PRODUCTION, purgecss({
-      content: ['dist/html/**/*.html', 'dist/js/**/*.js'],
-      safelist: {
-        standard: [...safelist.whitelist],
-        deep: [...safelist.whitelistPatterns]
-      }
-    })))
-    .pipe(dest("dist/css"))
-}
+  return src(["dist/css/bundle.css", "dist/css/bundle-rtl.css"])
+    .pipe(
+      gulpif(
+        PRODUCTION,
+        purgecss({
+          content: ["dist/**/*.html", "dist/js/**/*.js", "!dist/styleguide.html"],
+          defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
+          safelist: {
+            standard: [...safelist.whitelist],
+            deep: [...safelist.whitelistPatterns],
+          },
+        })
+      )
+    )
+    .pipe(dest("dist/css"));
+};
 
 export const scripts = () => {
   return src(["src/js/bundle.js", "src/js/bundle-rtl.js"])
@@ -69,7 +82,7 @@ export const scripts = () => {
           filename: "[name].js",
         },
         externals: {
-          jquery: 'jQuery',
+          jquery: "jQuery",
         },
       })
     )
@@ -92,7 +105,48 @@ export const html = () => {
         basepath: "@file",
       })
     )
-    .pipe(dest("dist/html"));
+    .pipe(dest("dist"));
+};
+
+export const images = () => {
+  return src("src/images/**/*.{jpg,jpeg,png,svg,gif}")
+    .pipe(
+      gulpif(
+        PRODUCTION,
+        imagemin([
+          imagemin.gifsicle({ interlaced: true }),
+          imagemin.mozjpeg({ quality: 75, progressive: true }),
+          imagemin.optipng({ optimizationLevel: 5 }),
+          imagemin.svgo({
+            plugins: [{ removeViewBox: true }, { cleanupIDs: false }],
+          }),
+        ])
+      )
+    )
+    .pipe(dest("dist/images"));
+};
+
+export const styleGuide = (done) => {
+  sherpa(
+    "./src/styleguide/index.md",
+    {
+      output: "./dist/styleguide.html",
+      template: "./src/styleguide/template.hbs",
+    },
+    done
+  );
+};
+
+export const server = (done) => {
+  browser.init({
+    server: "dist",
+    port: 3000,
+  });
+  done();
+};
+
+export const reload = () => {
+  return browser.reload();
 };
 
 export const clean = () => del(["dist"]);
@@ -120,26 +174,34 @@ export const compress = () => {
 };
 
 export const watchForChanges = () => {
-  watch("src/scss/**/*.scss", styles);
-  watch(
-    ["src/**/*", "!src/{images,js,scss}", "!src/{images,js,scss}/**/*"],
-    copy
+  watch("src/scss/**/*.scss").on("all", series(styles, reload));
+  watch(["src/**/*", "!src/{images,js,scss}", "!src/{images,js,scss}/**/*"]).on(
+    "all",
+    series(copy, reload)
   );
-  watch("src/js/**/*.js", scripts);
-  watch("./src/html/**/*.html", html);
+  watch("src/js/**/*.js").on("all", series(scripts, reload));
+  watch("./src/html/**/*.html").on("all", series(html, reload));
+  watch("src/images/**/*.{jpg,jpeg,png,svg,gif}").on(
+    "all",
+    series(images, reload)
+  );
+  watch("src/styleguide/**").on("all", series(styleGuide, reload));
 };
 
 export const dev = series(
   clean,
-  parallel(styles, copy, scripts),
+  parallel(styles, copy, scripts, images),
   html,
+  styleGuide,
+  server,
   watchForChanges
 );
 export const build = series(
   clean,
   scripts,
-  parallel(styles, copy),
+  parallel(styles, copy, images),
   html,
+  styleGuide,
   stylePurge,
   compress
 );
