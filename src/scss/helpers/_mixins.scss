@@ -1,0 +1,1155 @@
+@use "sass:meta";
+@use "queries" as *;
+$dir: "ltr" !default;
+@use "../bootvars" as *;
+
+$admin: false !default;
+
+@mixin admin-only() {
+  @if ($admin) {
+    @content;
+  }
+}
+
+@mixin arrow(
+  $direction,
+  $color,
+  $size,
+  $thickness: $size,
+  $solidState: "hollow"
+) {
+  @if $solidState == "solid" {
+    width: 0;
+    height: 0;
+    @if $direction == "up" {
+      border-left: #{$size} solid transparent;
+      border-right: #{$size} solid transparent;
+      border-bottom: #{$size} solid #{$color};
+    }
+    @if $direction == "down" {
+      border-left: #{$size} solid transparent;
+      border-right: #{$size} solid transparent;
+      border-top: #{$size} solid #{$color};
+    }
+    @if $direction == "right" {
+      border-top: #{$size} solid transparent;
+      border-bottom: #{$size} solid transparent;
+      border-left: #{$size} solid #{$color};
+    }
+    @if $direction == "left" {
+      border-top: #{$size} solid transparent;
+      border-bottom: #{$size} solid transparent;
+      border-right: #{$size} solid #{$color};
+    }
+  }
+  @if $solidState == "hollow" {
+    border: solid #{$color};
+    border-width: 0 #{$thickness} #{$thickness} 0;
+    display: inline-block;
+    padding: #{$size};
+    @if $direction == "up" {
+      transform: rotate(-135deg);
+    }
+    @if $direction == "down" {
+      transform: rotate(45deg);
+    }
+    @if $direction == "right" {
+      transform: rotate(-45deg);
+    }
+    @if $direction == "left" {
+      transform: rotate(135deg);
+    }
+  }
+}
+
+@mixin scrollbar($color) {
+  /* width */
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  /* Track */
+  &::-webkit-scrollbar-track {
+    border-radius: 5px;
+  }
+
+  /* Handle */
+  &::-webkit-scrollbar-thumb {
+    background: $color;
+    border-radius: 5px;
+  }
+}
+
+@mixin appDir($ltr_property, $ltr_value, $rtl_property, $rtl_value) {
+  @if $dir == "ltr" {
+    #{$ltr_property}: $ltr_value;
+  }
+  @if $dir == "rtl" {
+    #{$rtl_property}: $rtl_value;
+  }
+}
+
+@mixin bg-img-mixin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+@mixin appDirRtl() {
+  @if $dir == "rtl" {
+    @content;
+  }
+}
+
+@mixin appDirLtr() {
+  @if $dir == "ltr" {
+    @content;
+  }
+}
+
+@mixin box-ratio($width, $height) {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  padding-top: $height/$width * 100%;
+}
+
+@mixin circle($diameter) {
+  width: $diameter;
+  height: $diameter;
+  border-radius: $diameter;
+}
+
+@mixin box-shadow(
+  $horizontal,
+  $vertical,
+  $blur,
+  $spread,
+  $color,
+  $inset: null
+) {
+  @if $inset {
+    box-shadow: inset $horizontal $vertical $blur $spread $color;
+  } @else {
+    box-shadow: $horizontal $vertical $blur $spread $color;
+  }
+}
+
+@mixin center($dir: "both") {
+  position: absolute;
+  @if $dir == "h" {
+    @include appDirAuto($start: 50%);
+    @include appDirValue(transform, translateX(-50%), translateX(50%));
+  }
+  @if $dir == "v" {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  @if $dir == "both" {
+    top: 50%;
+    @include appDirAuto($start: 50%);
+    @include appDirValue(
+      transform,
+      translate(-50%, -50%),
+      translate(50%, -50%)
+    );
+  }
+}
+
+@mixin curve($position, $height, $hideAt: null, $inverse: null, $inset: null) {
+  .curve {
+    position: absolute;
+    width: 100%;
+    height: $height;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    @include appDir(left, 0, right, 0);
+    @if $position == "top" {
+      @if $inset {
+        top: 0;
+      } @else {
+        top: #{-$height + 1px};
+      }
+    }
+    @if $position == "bottom" {
+      @if $inset {
+        bottom: 0;
+      } @else {
+        bottom: #{$height - 1px};
+      }
+    }
+    @if $hideAt {
+      @include media("<=" + $hideAt) {
+        display: none;
+      }
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      @if $inverse {
+        @include appDir(transform, rotatey(180deg), null, null);
+      } @else {
+        @include appDir(null, null, transform, rotatey(180deg));
+      }
+    }
+  }
+}
+
+@mixin my-pagination() {
+  margin: 30px 0;
+  .page-numbers {
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    transition: all 0.3s;
+    &.current {
+      color: white;
+      background-color: $primary;
+      border-radius: 100px;
+    }
+    &.next {
+      border: 2px solid lightgray;
+      border-radius: 20px;
+      i {
+        @include appDir(margin-left, 10px, margin-right, 10px);
+        font-size: 0.9rem;
+        &::before {
+          @include appDir(content, "\f061", content, "\f060");
+        }
+      }
+    }
+    &.prev {
+      border: 2px solid lightgray;
+      border-radius: 20px;
+      i {
+        @include appDir(margin-right, 10px, margin-left, 10px);
+        font-size: 0.9rem;
+        &::before {
+          @include appDir(content, "\f060", content, "\f061");
+        }
+      }
+    }
+    &:hover {
+      text-decoration: none;
+      border-color: $primary;
+    }
+  }
+}
+
+@mixin insetBorder() {
+  @include appDirLtr() {
+    &:nth-child(-n + 3) {
+      border-bottom: $col-border;
+    }
+    &:nth-child(3n + 1) {
+      border-right: $col-border;
+    }
+    &:nth-child(3n) {
+      border-left: $col-border;
+    }
+    &:nth-child(n + 7) {
+      border-top: $col-border;
+    }
+  }
+  @include appDirRtl() {
+    &:nth-child(-n + 3) {
+      border-bottom: $col-border;
+    }
+    &:nth-child(3n + 1) {
+      border-left: $col-border;
+    }
+    &:nth-child(3n) {
+      border-right: $col-border;
+    }
+    &:nth-child(n + 7) {
+      border-top: $col-border;
+    }
+  }
+}
+
+@mixin if-direct-parent($parent-selector) {
+  $current-sequences: &;
+  $new-sequences: ();
+
+  @each $sequence in $current-sequences {
+    $current-selector: nth($sequence, -1);
+    $prepended-selector: join($parent-selector, $current-selector);
+    $new-sequence: set-nth($sequence, -1, $prepended-selector);
+    $new-sequences: append($new-sequences, $new-sequence, comma);
+  }
+
+  @at-root #{$new-sequences} {
+    @content;
+  }
+}
+@mixin line-wv-dashes(
+  $height: 7px,
+  $color: lightgray,
+  $spacing: 7px,
+  $vertical-angle: -55deg
+) {
+  background: repeating-linear-gradient(
+    $vertical-angle,
+    $color 0px,
+    white 1px,
+    white #{1px + $spacing},
+    $color #{2px + $spacing}
+  );
+  width: 100%;
+  height: $height;
+}
+
+@mixin widget_custom_categories(
+  $indentation: 20px,
+  $icon-family: "FontAwesome",
+  $parent-icon-content: "\f02b",
+  $closed-list-content: "\f077",
+  $open-list-content: "\f078",
+  $border-bet-items: 1px solid #eceef0
+) {
+  .title {
+    font-weight: 700;
+  }
+  ul {
+    list-style: none;
+    padding: 0;
+    li {
+      position: relative;
+      padding-top: 10px;
+      @include appDir(padding-left, $indentation, padding-right, $indentation);
+      padding-bottom: 10px;
+      .children {
+        display: none;
+      }
+      &:not(:last-of-type) {
+        border-bottom: $border-bet-items;
+      }
+      &::before {
+        position: absolute;
+        font-family: $icon-family;
+        content: $parent-icon-content;
+        font-size: 0.8rem;
+        top: 15px;
+        @include appDir(left, 0, right, 0);
+      }
+      &.current-cat,
+      &.current-cat-ancestor {
+        &::before {
+          color: $primary;
+        }
+        & > .children {
+          display: block;
+          border: none;
+          li:not(.has-children) {
+            &::before {
+              content: "";
+            }
+          }
+        }
+      }
+      &.current-cat > a {
+        color: $primary;
+        font-weight: 600;
+      }
+      &.has-children {
+        &:not(.current-cat):before,
+        &:not(.current-cat-ancestor):before {
+          content: $closed-list-content;
+        }
+        &.current-cat,
+        &.current-cat-ancestor {
+          &::before {
+            content: $open-list-content;
+          }
+        }
+      }
+    }
+  }
+  @content;
+}
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace +
+      str-replace(
+        str-slice($string, $index + str-length($search)),
+        $search,
+        $replace
+      );
+  }
+
+  @return $string;
+}
+
+@mixin appDirAuto($args...) {
+  @each $property, $value in meta.keywords($args) {
+    @if $dir == "ltr" {
+      $prop: str-replace($property, "start", "left");
+      $propClean: str-replace($prop, "end", "right");
+      $val: str-replace(#{$value}, "start", "left");
+      $valClean: str-replace($val, "end", "right");
+      #{$propClean}: #{$valClean};
+    }
+    @if $dir == "rtl" {
+      $prop: str-replace($property, "start", "right");
+      $propClean: str-replace($prop, "end", "left");
+      $val: str-replace(#{$value}, "start", "right");
+      $valClean: str-replace($val, "end", "left");
+      #{$propClean}: #{$valClean};
+    }
+  }
+}
+
+@mixin appDirValue($property, $ltr_value, $rtl_value) {
+  @if $dir == "ltr" {
+    #{$property}: $ltr_value;
+  }
+  @if $dir == "rtl" {
+    #{$property}: $rtl_value;
+  }
+}
+@mixin splide(
+  $dots: true,
+  $splide_dot_color: gray,
+  $splide_dot_color_active: $primary,
+  $splide_dot_circle_size: 16px,
+  $splide_dot_opacity_default: 0.75
+) {
+  @if ($dots) {
+    .splide__pagination {
+      bottom: 14%;
+      padding: 0;
+      @include center("h");
+      button {
+        border: none;
+        @include circle($splide_dot_circle_size);
+        background-color: $splide_dot_color;
+        opacity: $splide_dot_opacity_default;
+        &.is-active {
+          background-color: $splide_dot_color_active;
+          opacity: 1;
+        }
+        @include appDirAuto($margin-end: 10px);
+      }
+    }
+  }
+  @content;
+}
+@mixin slick(
+  $slick-arrow-color: black,
+  $slick-arrow-shape-color: white,
+  $slick-arrow-box-size: 30px,
+  $slick-arrow-size: 20px,
+  $slick-arrow-font-family: $font-family-base,
+  $slick-arrow-border: none,
+  $slick-dot-color: black,
+  $slick-dot-color-active: $slick-dot-color,
+  $slick-prev-character: "\003C",
+  $slick-next-character: "\003E",
+  $slick-dot-size: 6px,
+  $slick-dot-box-size: $slick-dot-size,
+  $slick-margin-bet-dots: 0 5px,
+  $slick-opacity-default: 0.75,
+  $slick-opacity-on-hover: 1,
+  $slick-opacity-not-active: 0.25,
+  $arrow-style: "normal",
+  $overwrite-arrows: false,
+  $use-arrows: true,
+  $overwrite-dots: false,
+  $dots-style: "normal",
+  $use-dots: true
+) {
+  @if ($overwrite-arrows == false and $use-arrows == true) {
+    @if ($arrow-style == "woo-slider") {
+      .slick-arrow {
+        position: absolute;
+        top: -20%;
+        width: $slick-arrow-box-size;
+        height: $slick-arrow-box-size;
+        line-height: 0;
+        font-size: 0;
+        border: $slick-arrow-border;
+        background: $slick-arrow-color;
+        transition: all 0.5s;
+        opacity: $slick-opacity-default;
+        &::after {
+          color: $slick-arrow-shape-color;
+          font-size: $slick-arrow-size;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: all 0.5s;
+          height: 100%;
+        }
+        &:focus {
+          outline: none;
+        }
+        &.slick-prev {
+          &::after {
+            font-family: $slick-arrow-font-family;
+            @if ($slick-arrow-font-family == "FontAwesome") {
+              line-height: 1;
+              @include appDir(
+                content,
+                $slick-prev-character,
+                content,
+                $slick-next-character
+              );
+            } @else {
+              content: $slick-prev-character;
+            }
+          }
+          @include appDir(right, 40px, left, 40px);
+        }
+        &.slick-next {
+          &::after {
+            font-family: $slick-arrow-font-family;
+            @if ($slick-arrow-font-family == "FontAwesome") {
+              line-height: 1;
+              @include appDir(
+                content,
+                $slick-next-character,
+                content,
+                $slick-prev-character
+              );
+            } @else {
+              content: $slick-next-character;
+            }
+          }
+          @include appDir(right, 0, left, 0);
+        }
+        &:hover,
+        &.active {
+          opacity: $slick-opacity-on-hover;
+          border-color: $primary;
+          &::after {
+            color: $primary;
+          }
+        }
+      }
+    }
+    @if ($arrow-style == "normal") {
+      .slick-arrow {
+        position: absolute;
+        top: 50%;
+        transform: translate(0, -50%);
+        @include circle($slick-arrow-box-size);
+        line-height: 0;
+        font-size: 0;
+        background: $slick-arrow-color;
+        transition: all 0.5s;
+        border: $slick-arrow-border;
+        outline: none;
+        opacity: $slick-opacity-default;
+        &::after {
+          color: $slick-arrow-shape-color;
+          font-size: $slick-arrow-size;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          transition: all 0.5s;
+          width: 100%;
+          height: 100%;
+        }
+        &:focus {
+          outline: none;
+        }
+        &.slick-prev {
+          &::after {
+            font-family: $slick-arrow-font-family;
+            @if ($slick-arrow-font-family == "FontAwesome") {
+              @include appDir(
+                content,
+                $slick-prev-character,
+                content,
+                $slick-next-character
+              );
+            } @else {
+              content: $slick-prev-character;
+            }
+          }
+          @include appDir(left, 0, right, 0);
+        }
+        &.slick-next {
+          &::after {
+            font-family: $slick-arrow-font-family;
+            @if ($slick-arrow-font-family == "FontAwesome") {
+              @include appDir(
+                content,
+                $slick-next-character,
+                content,
+                $slick-prev-character
+              );
+            } @else {
+              content: $slick-next-character;
+            }
+          }
+          @include appDir(right, 0, left, 0);
+        }
+        &:hover,
+        &.active {
+          opacity: $slick-opacity-on-hover;
+          border-color: $primary;
+          &::after {
+            color: $primary;
+          }
+        }
+      }
+    }
+  }
+  @if ($overwrite-dots == false and $use-dots == true) {
+    @if ($dots-style == "normal") {
+      .slick-dotted.slick-slider {
+        margin-bottom: 30px;
+      }
+      .slick-dots {
+        position: absolute;
+        bottom: -25px;
+        @include appDir(left, 0, right, 0);
+        list-style: none;
+        display: block;
+        text-align: center;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        li {
+          position: relative;
+          display: inline-block;
+          height: $slick-dot-box-size;
+          width: $slick-dot-box-size;
+          margin: $slick-margin-bet-dots;
+          padding: 0;
+          cursor: pointer;
+          button {
+            display: block;
+            border: none;
+            background: transparent;
+            @include circle($slick-dot-box-size);
+            outline: none;
+            font-size: 0px;
+            color: transparent;
+            padding: 0;
+            position: relative;
+            cursor: pointer;
+            &:hover,
+            &:focus {
+              outline: none;
+              &:before {
+                opacity: $slick-opacity-on-hover;
+              }
+            }
+            &:before {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              content: "";
+              @include circle($slick-dot-size);
+              background-color: $slick-dot-color;
+              opacity: $slick-opacity-not-active;
+            }
+          }
+          &.slick-active button:before {
+            background-color: $slick-dot-color-active;
+            opacity: $slick-opacity-default;
+          }
+        }
+      }
+    }
+  }
+  @content;
+}
+
+@mixin rings($duration, $delay) {
+  opacity: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: -0;
+  left: -0;
+  right: 0;
+  bottom: 0;
+  content: "";
+  height: 100%;
+  width: 100%;
+  border: 8px solid rgba(0, 0, 0, 0.2);
+  border-radius: 100%;
+  animation-name: ripple;
+  animation-duration: $duration;
+  animation-delay: $delay;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(0.65, 0, 0.34, 1);
+  z-index: -1;
+}
+
+@mixin my-loader(
+  $pending-animation-duration: 0.5s,
+  $bg-color: #fafafa,
+  $circle-diameter: 150px,
+  $circle-bg-color: white,
+  $ring-after-duration: 1s,
+  $ring-after-delay: 0s,
+  $ring-before-duration: 1s,
+  $ring-before-delay: 0.2s,
+  $done-animation-duration: 0.5s,
+  $pending-animation-name: fadeIn,
+  $done-animation-name: fadeOut,
+  $custom-img-width: $circle-diameter
+) {
+  &.pending {
+    animation-duration: $pending-animation-duration;
+    animation-fill-mode: both;
+    animation-name: $pending-animation-name;
+  }
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  display: flex;
+  z-index: 100;
+  justify-content: center;
+  background-color: $bg-color;
+  align-items: center;
+  top: 0;
+  left: 0;
+  .request-loader {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: $circle-diameter;
+    width: $circle-diameter;
+    border-radius: 100%;
+    background: $circle-bg-color;
+    box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
+    .img-container {
+      @include circle($circle-diameter);
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      img {
+        width: calc(#{$custom-img-width} * 75 / 100);
+        height: auto;
+      }
+    }
+    &::after {
+      @include rings($ring-after-duration, $ring-after-delay);
+    }
+
+    &::before {
+      @include rings($ring-before-duration, $ring-before-delay);
+    }
+  }
+  &.done {
+    animation-duration: $done-animation-duration;
+    animation-fill-mode: both;
+    animation-name: $done-animation-name;
+  }
+}
+
+@keyframes ripple {
+  from {
+    opacity: 1;
+    transform: scale3d(0.75, 0.75, 1);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale3d(1.5, 1.5, 1);
+  }
+}
+
+@mixin mySlider($height) {
+  .slideshow-container {
+    position: relative;
+    margin: auto;
+    height: $height;
+    .mySlides {
+      height: 100%;
+      img {
+        min-width: 100vw;
+        min-height: 100%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -2;
+      }
+      .slide-inner {
+        position: absolute;
+        top: 0;
+        @include appDir(left, 0, right, 0);
+        height: $height - 30vh;
+        overflow: hidden;
+        @include media(">=mini-desktop") {
+          width: 60%;
+        }
+        @include media("<mini-desktop") {
+          width: 80%;
+        }
+        .slide-content {
+          position: absolute;
+          z-index: 6;
+          bottom: 5%;
+          @include appDir(left, 0, right, 0);
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-start;
+          flex-direction: column;
+          .slide-hint {
+            color: $primary;
+            font-size: 1rem;
+          }
+          .slide-title {
+            @include media(">=mini-desktop") {
+              font-size: 2.8vw;
+            }
+            @include media("<mini-desktop", ">tablet") {
+              font-size: 2.2rem;
+            }
+            @include media("<=tablet", ">big-phone") {
+              font-size: 1.8rem;
+            }
+            @include media("<=big-phone") {
+              font-size: 1.5rem;
+            }
+            color: white;
+            font-weight: bold;
+            margin: 10px 0 20px;
+          }
+          .slide-btn {
+            display: flex;
+            color: white;
+            font-size: 1.1rem;
+            width: 150px;
+            height: 45px;
+            justify-content: center;
+            align-items: center;
+            font-weight: 500;
+          }
+        }
+      }
+      &.show {
+        animation-name: fadeIn;
+        animation-duration: 1s;
+        .slide-content {
+          animation-name: slideIn;
+          animation-duration: 1s;
+        }
+      }
+      &:not(.show) {
+        .slide-content {
+          animation-name: slideOut;
+          animation-duration: 1s;
+        }
+      }
+    }
+    .controls {
+      position: absolute;
+      z-index: 3;
+      top: 50%;
+      transform: translateY(-50%);
+      @include appDir(right, 0, left, 0);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      .prev,
+      .next {
+        cursor: pointer;
+        color: black;
+        font-size: 18px;
+        transition: 0.6s ease;
+        background: $secondary;
+        border-radius: 3px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        &:hover {
+          background-color: $primary;
+          color: white;
+          text-decoration: none;
+        }
+        margin-top: 5px;
+      }
+    }
+    .dots-cont {
+      position: absolute;
+      bottom: 15px;
+      z-index: 3;
+      left: 50%;
+      transform: translateX(-50%);
+      .dot {
+        cursor: pointer;
+        height: 15px;
+        width: 15px;
+        margin: 0 2px;
+        background-color: $secondary;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background-color 0.6s ease;
+        &:hover,
+        &.active {
+          background-color: $primary;
+        }
+      }
+    }
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    bottom: -50%;
+    opacity: 0;
+  }
+  50% {
+    bottom: -50%;
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+    bottom: 5%;
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    bottom: 5%;
+    opacity: 1;
+  }
+  50% {
+    bottom: -50%;
+    opacity: 0.5;
+  }
+  100% {
+    bottom: -50%;
+    opacity: 0;
+  }
+}
+
+@mixin contact_form_seven(
+  $field-bg: #e3f4fb,
+  $field-placeholder-color: #79acbd,
+  $field-color: black,
+  $field-width: 100%,
+  $field-min-height: 50px,
+  $field-padding: 0 10px,
+  $field-font-size: 16px,
+  $field-margin-between-rows: 1rem,
+  $field-margin-between-cols: 30px,
+  $field-border-radius: 10px,
+  $field-border-color: transparent,
+  $field-border-width: 1px,
+  $ta-height: 120px,
+  $submit-bg: #ed1b24,
+  $submit-txt-color: white,
+  $submit-font-weight: normal,
+  $btns-padding: 10px 25px,
+  $btns-width: 150px,
+  $btns-height: inherit,
+  $btns-txt-size: 16px,
+  $btns-border-radius: $field-border-radius,
+  $checkbox-width: 20px
+) {
+  .wpcf7-form {
+    @include appDir(direction, ltr, direction, rtl);
+    .form-group {
+      margin-bottom: $field-margin-between-rows;
+      @include media(">bootstrap-sm") {
+        &.row-first,
+        &.row-last {
+          width: calc(
+            50% - #{($field-margin-between-cols / 2) + (
+                2 * $field-border-width
+              ) + 1}
+          );
+
+          display: inline-block;
+          min-width: 200px;
+        }
+        @include media(">=big-phone") {
+          &.row-first {
+            @include appDir(
+              margin-right,
+              #{$field-margin-between-cols - (2 * $field-border-width)},
+              margin-left,
+              $field-margin-between-cols
+            );
+          }
+        }
+      }
+      input,
+      textarea,
+      select {
+        &:not([type="submit"]) {
+          &:not([type="checkbox"]) {
+            width: $field-width;
+          }
+          background: $field-bg;
+          border-width: $field-border-width;
+          border-color: $field-border-color;
+          border-style: solid;
+          border-radius: $field-border-radius;
+          min-height: $field-min-height;
+          padding: $field-padding;
+          font-weight: 400;
+          font-size: $field-font-size;
+          transition: all 0.3s ease-in-out;
+          color: $field-color;
+          @include appDir(direction, ltr, direction, rtl);
+          @include appDir(text-align, left, text-align, right);
+          &::placeholder {
+            color: $field-placeholder-color;
+          }
+          &:focus {
+            outline: none;
+            border-color: $primary;
+          }
+          option:not(:first-of-type) {
+            color: $field-color;
+          }
+          option:first-of-type {
+            color: $field-placeholder-color;
+          }
+        }
+        &[type="submit"] {
+          border-radius: $btns-border-radius;
+          padding: $btns-padding;
+          font-size: $btns-txt-size;
+          font-weight: $submit-font-weight;
+          border: 0;
+          width: $btns-width;
+          color: $submit-txt-color;
+          background: $submit-bg;
+          height: $btns-height;
+        }
+      }
+      textarea {
+        height: $ta-height;
+      }
+      .select-box {
+        width: 100%;
+        border-width: $field-border-width;
+        border-color: $field-border-color;
+        border-style: solid;
+        border-radius: $field-border-radius;
+        position: relative;
+        &::after {
+          width: 0;
+          height: 0;
+          border-left: 7px solid transparent;
+          border-right: 7px solid transparent;
+          border-top: 7px solid $field-placeholder-color;
+          position: absolute;
+          top: $field-min-height / 2;
+          @include appDir(right, 1px, left, 1px);
+          content: "";
+          z-index: 6;
+        }
+        select {
+          border: none;
+          appearance: none;
+          position: relative;
+        }
+      }
+      select {
+        line-height: $field-min-height;
+        &.untouched {
+          color: $field-placeholder-color;
+        }
+      }
+      .wpcf7-list-item {
+        @include appDirLtr() {
+          margin-left: 0;
+          margin-right: $field-margin-between-cols;
+        }
+        @include appDirRtl() {
+          margin-right: 0;
+          margin-left: $field-margin-between-cols;
+        }
+        label {
+          display: flex;
+          flex-direction: column;
+        }
+        input {
+          width: $checkbox-width;
+        }
+      }
+      .wpcf7-acceptance {
+        .wpcf7-list-item {
+          label {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: flex-start;
+            align-items: center;
+            input {
+              @include appDir(margin-right, 20px, margin-left, 20px);
+            }
+            span {
+              @include media(">768px") {
+                width: 90%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  @content;
+}
+
+// <div class="icon-list">
+//   <h5 class="list-title">Factory Address:</h5>
+//   <ul class="list-content">
+//     <li><i class="fas fa-map-marker-alt"></i>Lot 36, 4th Industrial Zone, 6th October City, Giza, Egypt</li>
+//   </ul>
+// </div>
+
+@mixin icon-list(
+  $title-color,
+  $icon-color,
+  $list-item-color,
+  $list-padding: 40px,
+  $icon-top: 7px,
+  $title-size: inherit,
+  $list-size: inherit,
+  $icon-size: inherit,
+  $title-margin: 0 0 10px,
+  $list-margin: 0 0 10px
+) {
+  .icon-list {
+    .list-title {
+      color: $title-color;
+      margin: $title-margin;
+    }
+    ul.list-content {
+      list-style: none;
+      margin: $list-margin;
+      li {
+        color: $list-item-color;
+        position: relative;
+        font-size: $list-size;
+        i {
+          font-size: $icon-size;
+          color: $icon-color;
+          position: absolute;
+          top: $icon-top;
+          @include appDir(left, -$list-padding, right, -$list-padding);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="../css/bundle.css" />
+    <title>@@title</title>
+  </head>
+  <body>
+    <div id="mySidenav" class="sidenav">
+      <div class="sidebar-header">
+        <h3 class="title">Main Menu</h3>
+        <a href="javascript:void(0)" class="closebtn">&times;</a>
+      </div>
+      @@include('./partials/navigationbar.part.html')
+    </div>
+    <div class="nav-container py-5">
+      <div class="container">
+        <nav class="flex max-w-7xl w-full justify-between items-center">
+          <nuxt-link class="navbar-brand" to="/"> tailwind </nuxt-link>
+          <button class="navbar-toggler block lg:hidden" type="button">
+            <span class="navbar-toggler-icon">menu</span>
+          </button>
+
+          <div class="hidden lg:block">
+            @@include('./partials/navigationbar.part.html')
+          </div>
+        </nav>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,110 @@
+html,
+body {
+  @include h.appDir(direction, ltr, direction, rtl);
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}
+
+body.out {
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+  animation-name: slideOutDown;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  &:focus {
+    outline: none;
+  }
+}
+
+section {
+  padding: 50px 0;
+  background-color: #ffffff;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.container-fluid,
+.container {
+  padding: 0 6vw;
+}
+.container-fluid:not(.no-max) {
+  max-width: 1600px;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.vail {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: black;
+  opacity: 0.4;
+}
+.shadow-vail {
+  box-shadow: 0px 0px 1px 100vmax rgba(0, 0, 0, 0.8) !important;
+}
+.bg-image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.bg-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.bold {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.white {
+  color: white;
+}
+
+.img-container {
+  position: relative;
+}
+
+.clickable-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  z-index: 10;
+}
+
+.sidebar__inner {
+  position: sticky;
+  top: 90px;
+}
+
+.slick-slide:focus {
+  outline: none;
+}
+
+div.pagination {
+  @include h.my-pagination();
+}
+
+.slick-prev,
+.slick-next {
+  z-index: 10;
+}

@@ -1,0 +1,8 @@
+$dir: "ltr";
+@import 'bootvars.scss';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "entry";

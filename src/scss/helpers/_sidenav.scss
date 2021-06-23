@@ -1,0 +1,98 @@
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 5;
+  top: 0;
+  @include h.appDirAuto($start: 0);
+  background-color: #3c4b54;
+  overflow-x: hidden;
+  transition: 0.5s;
+  .sidebar-header {
+    background-color: $primary;
+    position: relative;
+    padding: 15px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+      color: white;
+      white-space: nowrap;
+      margin: 0;
+      font-size: 1.6rem;
+    }
+    .closebtn {
+      font-size: 36px;
+      color: white;
+      &:hover, &:focus, &:active {
+        text-decoration: none;
+      }
+    }
+  }
+  ul {
+    @include h.appDirAuto($padding-start: 0);
+    list-style: none;
+    li {
+      overflow: hidden;
+      padding: 0;
+      position: relative;
+      &.menu-icon {
+        display: grid;
+        grid-template-columns: 70px auto;
+        grid-auto-flow: column dense;
+        img {
+          max-width: 30px;
+          max-height: 30px;
+          align-self: center;
+          justify-self: flex-start;
+          @include h.appDirAuto($margin-start: 40px);
+        }
+        a {
+          @include h.appDirAuto($padding-start: 10px);
+          align-self: center;
+          justify-self: flex-start;
+        }
+      }
+      &.menu-item-has-children {
+        &::after {
+          position: absolute;
+          top: 10px;
+          color: white;
+          font-size: 1.7rem;
+          content: "\002B";
+          @include h.appDirAuto($end: 40px);
+        }
+        &.child-menu-opened {
+          &::after {
+            content: "\002D";
+          }
+        }
+      }
+      a {
+        display: inline-block;
+        white-space: nowrap;
+        color: white;
+        font-weight: 500;
+        padding-top: 15px;
+        padding-bottom: 15px;
+        @include h.appDirAuto($padding-start: 40px);
+      }
+    }
+    &.sub-menu {
+      transition: all 0.5s;
+      overflow: hidden;
+      max-height: 0;
+      background-color: #37454e;
+      position: relative;
+      &.opened::after {
+        position: absolute;
+        width: 5px;
+        height: 100%;
+        content: "";
+        background-color: white;
+        @include h.appDirAuto($start: 0);
+        top: 0;
+      }
+    }
+  }
+}
