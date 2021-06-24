@@ -1,6 +1,6 @@
 {
   "name": "starter_theme_tailwind",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "my tailwind starter theme",
   "main": "index.js",
   "scripts": {

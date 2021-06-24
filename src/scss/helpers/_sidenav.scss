@@ -58,6 +58,7 @@
           position: absolute;
           top: 10px;
           color: white;
+          transform: none;
           font-size: 1.7rem;
           content: "\002B";
           @include h.appDirAuto($end: 40px);

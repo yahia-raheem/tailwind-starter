@@ -1,0 +1,41 @@
+<div class="nav-container">
+  <div class="main-bar py-3 bg-primary">
+    <div class="container">
+      <nav class="flex w-full justify-between items-center">
+        <a class="navbar-brand text-white" href="/">tailwind starter</a>
+        <button
+          class="
+            navbar-toggler
+            block
+            lg:hidden
+            px-2
+            py-1
+            border-white border-solid border
+            rounded-sm
+          "
+          type="button"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="white"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+
+        <div class="hidden lg:flex w-2/3">
+          @@include('./headernavigation.part.html', {extraClasses:
+          'desktop-menu'})
+        </div>
+      </nav>
+    </div>
+  </div>
+</div>

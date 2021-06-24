@@ -9,60 +9,120 @@
   </head>
   <body>
     <div id="mySidenav" class="sidenav">
-      <div class="sidebar-header">
-        <h3 class="title">Main Menu</h3>
-        <a href="javascript:void(0)" class="closebtn">&times;</a>
-      </div>
-      <div class="sidebar-content py-3">
-        <div class="flex w-max flex-col lg:flex-row ps-4vw lg:ps-0">
-  <a class="nav-link me-2 text-white lg:text-black" href="/">home</a>
-  <a class="nav-link me-2 text-white lg:text-black" href="/">about</a>
-  <a class="nav-link me-2 text-white lg:text-black" href="/">contact us</a>
-</div>
-      </div>
-    </div>
-    <div class="nav-container py-4">
-      <div class="container">
-        <nav class="flex max-w-7xl w-full justify-between items-center">
-          <nuxt-link class="navbar-brand" to="/"> tailwind </nuxt-link>
-          <button
-            class="
-              navbar-toggler
-              block
-              lg:hidden
-              px-2
-              py-1
-              border-black border-solid border
-              rounded-sm
-            "
-            type="button"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16"
-              />
-            </svg>
-          </button>
+  <div class="sidebar-header">
+    <h3 class="title">Main Menu</h3>
+    <a href="javascript:void(0)" class="closebtn">&times;</a>
+  </div>
+  <div class="sidebar-content py-3">
+    <ul
+  class="
+    flex
+    w-full
+    flex-col
+    lg:flex-row
+    ps-4vw
+    lg:ps-0 lg:justify-end
+    mobile-menu
+  "
+>
+  <li class="menu-item me-5 menu-item-has-children">
+    <a class="nav-link text-white uppercase font-medium" href="/">home</a>
+    <ul class="sub-menu">
+      <li class="menu-item">
+        <a href="/" class="nav-link">item1</a>
+      </li>
+      <li class="menu-item">
+        <a href="/" class="nav-link">item1</a>
+      </li>
+      <li class="menu-item">
+        <a href="/" class="nav-link">item1</a>
+      </li>
+    </ul>
+  </li>
+  <li class="menu-item me-5">
+    <a class="nav-link text-white uppercase font-medium" href="/">home</a>
+  </li>
+  <li class="menu-item me-5">
+    <a class="nav-link text-white uppercase font-medium" href="/">home</a>
+  </li>
+</ul>
 
-          <div class="hidden lg:block">
-            <div class="flex w-max flex-col lg:flex-row ps-4vw lg:ps-0">
-  <a class="nav-link me-2 text-white lg:text-black" href="/">home</a>
-  <a class="nav-link me-2 text-white lg:text-black" href="/">about</a>
-  <a class="nav-link me-2 text-white lg:text-black" href="/">contact us</a>
+  </div>
 </div>
-          </div>
-        </nav>
-      </div>
+
+    <div class="nav-container">
+  <div class="main-bar py-3 bg-primary">
+    <div class="container">
+      <nav class="flex w-full justify-between items-center">
+        <a class="navbar-brand text-white" href="/">tailwind starter</a>
+        <button
+          class="
+            navbar-toggler
+            block
+            lg:hidden
+            px-2
+            py-1
+            border-white border-solid border
+            rounded-sm
+          "
+          type="button"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="white"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+
+        <div class="hidden lg:flex w-2/3">
+          <ul
+  class="
+    flex
+    w-full
+    flex-col
+    lg:flex-row
+    ps-4vw
+    lg:ps-0 lg:justify-end
+    desktop-menu
+  "
+>
+  <li class="menu-item me-5 menu-item-has-children">
+    <a class="nav-link text-white uppercase font-medium" href="/">home</a>
+    <ul class="sub-menu">
+      <li class="menu-item">
+        <a href="/" class="nav-link">item1</a>
+      </li>
+      <li class="menu-item">
+        <a href="/" class="nav-link">item1</a>
+      </li>
+      <li class="menu-item">
+        <a href="/" class="nav-link">item1</a>
+      </li>
+    </ul>
+  </li>
+  <li class="menu-item me-5">
+    <a class="nav-link text-white uppercase font-medium" href="/">home</a>
+  </li>
+  <li class="menu-item me-5">
+    <a class="nav-link text-white uppercase font-medium" href="/">home</a>
+  </li>
+</ul>
+
+        </div>
+      </nav>
     </div>
+  </div>
+</div>
+
   </body>
 </html>
 

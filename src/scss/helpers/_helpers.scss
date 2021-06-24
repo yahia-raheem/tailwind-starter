@@ -29,14 +29,6 @@ section {
   box-sizing: border-box;
 }
 
-.container-fluid,
-.container {
-  padding: 0 6vw;
-}
-.container-fluid:not(.no-max) {
-  max-width: 1600px;
-}
-
 .spacer {
   flex: 1 1 auto;
 }
