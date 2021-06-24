@@ -1,6 +1,20 @@
-# starter
-My tailwind starter theme.
-this is the first beta based on my other wp starter
+# My Tailwind Starter
+this is my gulp + tailwind starter theme with rtl support.
+
+features:
+1) rtl support
+2) dart-sass support
+3) tree-shaking
+4) auto-prefixing
+5) sass mixins, and ES6 helper functions for various tasks such as triggereing callback functions on intersection observer events, and keeping aspect ratio dynamically, and more.
+6) basic navbar and sidebar with dropdown support
+7) image optimization (tweeking can be done from the gulp file)
+8) styleguide generation
+9) es6 to es5 for older browsers support
+
+planned features:
+1) a complete UI library with html component files + mixins to allow for quick changes to elements
+2) compiling to an spa-like configuration for a quick static deployment (for proof of concepts or similar usage)
 
 steps:
 1) download a release
