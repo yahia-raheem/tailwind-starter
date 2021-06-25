@@ -11,6 +11,7 @@ features:
 7) image optimization (tweeking can be done from the gulp file)
 8) styleguide generation
 9) es6 to es5 for older browsers support
+10) working jit implementation (tailwind jit)
 
 planned features:
 1) a complete UI library with html component files + mixins to allow for quick changes to elements
