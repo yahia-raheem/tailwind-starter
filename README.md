@@ -12,6 +12,7 @@ features:
 8) styleguide generation
 9) es6 to es5 for older browsers support
 10) working jit implementation (tailwind jit)
+11) responsive image generation (using gulp-image-resize. check their website for installation instructions and the steps section for how to use it)
 
 planned features:
 1) a complete UI library with html component files + mixins to allow for quick changes to elements
@@ -23,3 +24,4 @@ steps:
 3) run npm start for the dev environment
 4) when you're done run npm run build
 5) you'll find the pure theme within the bundled folder or you could just delete the node_modules and the bundled folders if you'd rather keep your src files intact
+6) if you want to use the responsive image generator make sure you follow the imagemagic and graphicsmagic packages installation instructions from the gulp-image-resize page and uncomment the commented image task in the gulp file while commenting the default one.

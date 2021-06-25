@@ -138,6 +138,33 @@ export const images = () => {
     .pipe(dest("dist/images"));
 };
 
+// export const images = (cb) => {
+//   [100, 300, 800, 1000, 2000].forEach((size) => {
+//     src("src/images/**/*.{jpg,jpeg,png,svg,gif}")
+//       .pipe(imageResize({ width: size }))
+//       .pipe(
+//         rename(function (path) {
+//           path.basename = `${path.basename}@${size}w`;
+//         })
+//       )
+//       .pipe(
+//         gulpif(
+//           PRODUCTION,
+//           imagemin([
+//             imagemin.gifsicle({ interlaced: true }),
+//             imagemin.mozjpeg({ quality: 75, progressive: true }),
+//             imagemin.optipng({ optimizationLevel: 5 }),
+//             imagemin.svgo({
+//               plugins: [{ removeViewBox: true }, { cleanupIDs: false }],
+//             }),
+//           ])
+//         )
+//       )
+//       .pipe(dest("dist/images"));
+//   });
+//   cb();
+// };
+
 export const styleGuide = (done) => {
   sherpa(
     "./src/styleguide/index.md",
