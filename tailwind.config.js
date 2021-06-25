@@ -1,5 +1,7 @@
 module.exports = {
   darkMode: false, // or 'media' or 'class'
+  mode: 'jit',
+  purge: [`./dist/**/*.{html,js}`],
   theme: {
     extend: {
       textColor: {

@@ -28,15 +28,25 @@ export const styles = () => {
   return src(["src/scss/bundle.scss", "src/scss/bundle-rtl.scss"])
     .pipe(gulpif(!PRODUCTION, sourcemaps.init()))
     .pipe(sass({ fiber: Fiber }).on("error", sass.logError))
+    .pipe(gulpif(!PRODUCTION, sourcemaps.write()))
+    .pipe(dest("dist/css"));
+};
+
+export const postStyles = () => {
+  return src(["dist/css/bundle.css", "dist/css/bundle-rtl.css"])
+    .pipe(
+      gulpif(
+        !PRODUCTION,
+        postcss([tailwindcss()]).on("error", (err) => console.log(err))
+      )
+    )
     .pipe(gulpif(PRODUCTION, cleanCss({ level: 0 })))
-    .pipe(gulpif(!PRODUCTION, postcss([tailwindcss()])))
     .pipe(
       gulpif(
         PRODUCTION,
         postcss([tailwindcss(), cssnano({ preset: "advanced" })])
       )
     )
-    .pipe(gulpif(!PRODUCTION, sourcemaps.write()))
     .pipe(dest("dist/css"));
 };
 
@@ -46,7 +56,11 @@ export const stylePurge = () => {
       gulpif(
         PRODUCTION,
         purgecss({
-          content: ["dist/**/*.html", "dist/js/**/*.js", "!dist/styleguide.html"],
+          content: [
+            "dist/**/*.html",
+            "dist/js/**/*.js",
+            "!dist/styleguide.html",
+          ],
           defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
           safelist: {
             standard: [...safelist.whitelist],
@@ -172,13 +186,19 @@ export const compress = () => {
 };
 
 export const watchForChanges = () => {
-  watch("src/scss/**/*.scss").on("all", series(styles, reload));
+  watch("src/scss/**/*.scss").on("all", series(styles, postStyles, reload));
   watch(["src/**/*", "!src/{images,js,scss}", "!src/{images,js,scss}/**/*"]).on(
     "all",
     series(copy, reload)
   );
-  watch("src/js/**/*.js").on("all", series(scripts, reload));
-  watch("./src/html/**/*.html").on("all", series(html, reload));
+  watch("src/js/**/*.js").on(
+    "all",
+    series(scripts, styles, postStyles, reload)
+  );
+  watch("./src/html/**/*.html").on(
+    "all",
+    series(html, styles, postStyles, reload)
+  );
   watch("src/images/**/*.{jpg,jpeg,png,svg,gif}").on(
     "all",
     series(images, reload)
@@ -190,6 +210,7 @@ export const dev = series(
   clean,
   parallel(styles, copy, scripts, images),
   html,
+  postStyles,
   styleGuide,
   server,
   watchForChanges
@@ -199,6 +220,7 @@ export const build = series(
   scripts,
   parallel(styles, copy, images),
   html,
+  postStyles,
   styleGuide,
   stylePurge,
   compress
