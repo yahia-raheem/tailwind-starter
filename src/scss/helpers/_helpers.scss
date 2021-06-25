@@ -41,6 +41,7 @@ section {
   height: 100%;
   background-color: black;
   opacity: 0.4;
+  z-index: 1;
 }
 .shadow-vail {
   box-shadow: 0px 0px 1px 100vmax rgba(0, 0, 0, 0.8) !important;

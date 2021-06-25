@@ -181,7 +181,7 @@ var removeClickListener = function removeClickListener() {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /mnt/0CA504390CA50439/projects/deployed/starter-tailwind/src/js/bundle.js */"./src/js/bundle.js");
+module.exports = __webpack_require__(/*! /media/yahia/yahia/work/tailwind-starter/src/js/bundle.js */"./src/js/bundle.js");
 
 
 /***/ })

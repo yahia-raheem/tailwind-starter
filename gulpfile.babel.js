@@ -20,9 +20,21 @@ import tailwindcss from "tailwindcss";
 import browser from "browser-sync";
 import imagemin from "gulp-imagemin";
 import sherpa from "style-sherpa";
+import imageResize from "gulp-image-resize";
+import rename from "gulp-rename";
+import fs from "fs";
+import yaml from "js-yaml";
 
 const PRODUCTION = yargs.argv.prod;
 sass.compiler = require("sass");
+
+// Load settings from settings.yml
+const { SIZES } = loadConfig();
+
+function loadConfig() {
+  let ymlFile = fs.readFileSync("config.yml", "utf8");
+  return yaml.load(ymlFile);
+}
 
 export const styles = () => {
   return src(["src/scss/bundle.scss", "src/scss/bundle-rtl.scss"])
@@ -34,6 +46,7 @@ export const styles = () => {
 
 export const postStyles = () => {
   return src(["dist/css/bundle.css", "dist/css/bundle-rtl.css"])
+    .pipe(gulpif(!PRODUCTION, sourcemaps.init({ loadMaps: true })))
     .pipe(
       gulpif(
         !PRODUCTION,
@@ -47,6 +60,7 @@ export const postStyles = () => {
         postcss([tailwindcss(), cssnano({ preset: "advanced" })])
       )
     )
+    .pipe(gulpif(!PRODUCTION, sourcemaps.write()))
     .pipe(dest("dist/css"));
 };
 
@@ -139,7 +153,7 @@ export const images = () => {
 };
 
 // export const images = (cb) => {
-//   [100, 300, 800, 1000, 2000].forEach((size) => {
+//   SIZES.forEach((size) => {
 //     src("src/images/**/*.{jpg,jpeg,png,svg,gif}")
 //       .pipe(imageResize({ width: size }))
 //       .pipe(
