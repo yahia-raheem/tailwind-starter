@@ -20,8 +20,8 @@ planned features:
 
 steps:
 1) download a release
-2) run npm install
-3) run npm start for the dev environment
-4) when you're done run npm run build
+2) run `npm install`
+3) run `npm start` for the dev environment
+4) when you're done run `npm run build`
 5) you'll find the pure theme within the bundled folder or you could just delete the node_modules and the bundled folders if you'd rather keep your src files intact
 6) if you want to use the responsive image generator make sure you follow the imagemagic and graphicsmagic packages installation instructions from the gulp-image-resize page and uncomment the commented image task in the gulp file while commenting the default one.
