@@ -1,5 +1,7 @@
 @charset "UTF-8";
 
+@use "sass:math";
+
 $breakpoints: (
   'phone': 320px,
   'big-phone': 420px,
@@ -200,7 +202,7 @@ $im-no-media-expressions: ('screen', 'portrait', 'landscape') !default;
       $result: $result * 10 + map-get($numbers, $character);
     } @else {
       $digits: $digits * 10;
-      $result: $result + map-get($numbers, $character) / $digits;
+      $result: $result + math.div(map-get($numbers, $character), $digits);
     }
   }
 

@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @use "sass:meta";
 @use "queries" as *;
 $dir: "ltr" !default;
@@ -116,7 +118,7 @@ $admin: false !default;
   position: relative;
   width: 100%;
   overflow: hidden;
-  padding-top: $height/$width * 100%;
+  padding-top: math.div($height, $width) * 100%;
 }
 
 @mixin circle($diameter) {
@@ -580,7 +582,7 @@ $admin: false !default;
         &.row-first,
         &.row-last {
           width: calc(
-            50% - #{($field-margin-between-cols / 2) + (
+            50% - #{($field-margin-between-cols * 0.5) + (
                 2 * $field-border-width
               ) + 1}
           );
@@ -662,7 +664,7 @@ $admin: false !default;
           border-right: 7px solid transparent;
           border-top: 7px solid $field-placeholder-color;
           position: absolute;
-          top: $field-min-height / 2;
+          top: $field-min-height * 0.5;
           @include appDir(right, 1px, left, 1px);
           content: "";
           z-index: 6;
