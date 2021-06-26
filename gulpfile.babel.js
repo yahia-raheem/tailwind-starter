@@ -75,7 +75,7 @@ export const stylePurge = () => {
             "dist/js/**/*.js",
             "!dist/styleguide.html",
           ],
-          defaultExtractor: (content) => content.match(/[\w-/:]+(?<!:)/g) || [],
+          defaultExtractor: (content) => content.match(/[\w-/:\[\]]+(?<!:)/g) || [],
           safelist: {
             standard: [...safelist.whitelist],
             deep: [...safelist.whitelistPatterns],
