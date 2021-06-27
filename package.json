@@ -37,6 +37,7 @@
     "style-sherpa": "^1.0.2",
     "tailwindcss": "^2.2.2",
     "tailwindcss-rtl": "^0.7.3",
+    "tailwindcss-debug-screens": "^2.0.0",
     "through2": "^3.0.1",
     "tiny-slider": "^2.9.2",
     "vinyl-named": "^1.1.0",
