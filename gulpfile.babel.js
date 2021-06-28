@@ -25,11 +25,13 @@ import rename from "gulp-rename";
 import fs from "fs";
 import yaml from "js-yaml";
 
+const critical = require("critical").stream;
+
 const PRODUCTION = yargs.argv.prod;
 sass.compiler = require("sass");
 
 // Load settings from settings.yml
-const { SIZES } = loadConfig();
+const { SIZES, CRITICALSIZES } = loadConfig();
 
 function loadConfig() {
   let ymlFile = fs.readFileSync("config.yml", "utf8");
@@ -190,6 +192,37 @@ export const styleGuide = (done) => {
   );
 };
 
+export const genCritical = (cb) => {
+  return src(["dist/*.html", "!dist/styleguide.html"])
+    .pipe(
+      critical({
+        base: "dist/",
+        inline: true,
+        css: ["dist/css/bundle.css"],
+        dimensions: CRITICALSIZES
+      })
+    )
+    .on("error", (err) => {
+      console.log(err);
+    })
+    .pipe(dest("dist/critical/ltr"));
+};
+export const genCriticalRtl = () => {
+  return src(["dist/*.html", "!dist/styleguide.html"])
+    .pipe(
+      critical({
+        base: "dist/",
+        inline: true,
+        css: ["dist/css/bundle-rtl.css"],
+        dimensions: CRITICALSIZES
+      })
+    )
+    .on("error", (err) => {
+      console.log(err);
+    })
+    .pipe(dest("dist/critical/rtl"));
+};
+
 export const server = (done) => {
   browser.init({
     server: "dist",
@@ -264,6 +297,8 @@ export const build = series(
   postStyles,
   styleGuide,
   stylePurge,
+  genCritical,
+  genCriticalRtl,
   compress
 );
 export default dev;
