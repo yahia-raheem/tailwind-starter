@@ -111,7 +111,7 @@ See the [open issues](tailwind-starter/issues) for a list of proposed features (
 <!-- LICENSE -->
 ## License
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distributed under the ISC License. See `LICENSE` for more information.
 
 
 
