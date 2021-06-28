@@ -93,7 +93,7 @@ npm run build
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-aside from integrating tailwind, this repo also includes some of my favourite css classes and js functions to make my life easier. so please do check them out. and someday i'll try to document them properly but for now take a look at the notes below for some of the tweakable elements and useful mixins
+aside from integrating tailwind, this repo also includes some of my favourite css classes and js functions to make my life easier. so please do check them out. and someday i'll try to document them properly but for now take a look at the notes below for some of the tweakable elements.
 
 Notes:
 * if you want to use the responsive image generator make sure you follow the `imagemagic` and `graphicsmagic` packages installation instructions from the `gulp-image-resize` page and uncomment the commented image task in the gulp file while commenting the default one.
