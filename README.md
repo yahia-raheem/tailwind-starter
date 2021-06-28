@@ -1,22 +1,5 @@
 # My Tailwind Starter
 
-<!--
-repo name: tailwind-starter
-description: My starter template based on tailwind and gulp!
-github name:  yahia-raheem
-email: eng.yahiaraheem.93@outlook.com
--->
-
-<!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
@@ -138,18 +121,3 @@ Distributed under the MIT License. See `LICENSE` for more information.
 Yahia Raheem - eng.yahiaraheem.93@outlook.com
 
 Project Link: [https://github.com/yahia-raheem/tailwind-starter/](https://github.com/yahia-raheem/tailwind-starter/)
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/ oGranny/BEST-README.svg?style=flat-square
-[contributors-url]: https://github.com/ oGranny/BEST-README/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/ oGranny/BEST-README.svg?style=flat-square
-[forks-url]: https://github.com/ oGranny/BEST-README/network/members
-[stars-shield]: https://img.shields.io/github/stars/ oGranny/BEST-README.svg?style=flat-square
-[stars-url]: https://github.com/ oGranny/BEST-README/stargazers
-[issues-shield]: https://img.shields.io/github/issues/ oGranny/BEST-README.svg?style=flat-square
-[issues-url]: https://github.com/ oGranny/BEST-README/issues
-[license-shield]: https://img.shields.io/github/license/ oGranny/BEST-README.svg?style=flat-square
-[license-url]: https://github.com/BEST-README/ oGranny/blob/master/LICENSE.txt
