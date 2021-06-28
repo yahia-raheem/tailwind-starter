@@ -5,14 +5,6 @@
 $dir: "ltr" !default;
 @use "../bootvars" as *;
 
-$admin: false !default;
-
-@mixin admin-only() {
-  @if ($admin) {
-    @content;
-  }
-}
-
 @mixin arrow(
   $direction,
   $color,
@@ -83,23 +75,14 @@ $admin: false !default;
   }
 }
 
-@mixin appDir($ltr_property, $ltr_value, $rtl_property, $rtl_value) {
-  @if $dir == "ltr" {
-    #{$ltr_property}: $ltr_value;
-  }
-  @if $dir == "rtl" {
-    #{$rtl_property}: $rtl_value;
-  }
-}
-
 @mixin bg-img-mixin {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  min-height: 100%;
-  width: 100%;
   object-fit: cover;
+  height: 100%;
+  width: 100%;
 }
 
 @mixin appDirRtl() {
@@ -125,21 +108,6 @@ $admin: false !default;
   width: $diameter;
   height: $diameter;
   border-radius: $diameter;
-}
-
-@mixin box-shadow(
-  $horizontal,
-  $vertical,
-  $blur,
-  $spread,
-  $color,
-  $inset: null
-) {
-  @if $inset {
-    box-shadow: inset $horizontal $vertical $blur $spread $color;
-  } @else {
-    box-shadow: $horizontal $vertical $blur $spread $color;
-  }
 }
 
 @mixin center($dir: "both") {
@@ -172,7 +140,7 @@ $admin: false !default;
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    @include appDir(left, 0, right, 0);
+    @include appDirAuto($start: 0);
     @if $position == "top" {
       @if $inset {
         top: 0;
@@ -196,9 +164,13 @@ $admin: false !default;
       width: 100%;
       height: 100%;
       @if $inverse {
-        @include appDir(transform, rotatey(180deg), null, null);
+        @include appDirLtr() {
+          transform: rotatey(180deg);
+        }
       } @else {
-        @include appDir(null, null, transform, rotatey(180deg));
+        @include appDirRtl() {
+          transform: rotatey(180deg);
+        }
       }
     }
   }
@@ -219,10 +191,10 @@ $admin: false !default;
       border: 2px solid lightgray;
       border-radius: 20px;
       i {
-        @include appDir(margin-left, 10px, margin-right, 10px);
+        @include appDirAuto($margin-start: 10px);
         font-size: 0.9rem;
         &::before {
-          @include appDir(content, "\f061", content, "\f060");
+          @include appDirValue(content, "\f061", "\f060");
         }
       }
     }
@@ -230,10 +202,10 @@ $admin: false !default;
       border: 2px solid lightgray;
       border-radius: 20px;
       i {
-        @include appDir(margin-right, 10px, margin-left, 10px);
+        @include appDirAuto($margin-end: 10px);
         font-size: 0.9rem;
         &::before {
-          @include appDir(content, "\f060", content, "\f061");
+          @include appDirValue(content, "\f060", "\f061");
         }
       }
     }
@@ -324,7 +296,7 @@ $admin: false !default;
     li {
       position: relative;
       padding-top: 10px;
-      @include appDir(padding-left, $indentation, padding-right, $indentation);
+      @include appDirAuto($padding-start: $indentation);
       padding-bottom: 10px;
       .children {
         display: none;
@@ -338,7 +310,7 @@ $admin: false !default;
         content: $parent-icon-content;
         font-size: 0.8rem;
         top: 15px;
-        @include appDir(left, 0, right, 0);
+        @include appDirAuto($start: 0);
       }
       &.current-cat,
       &.current-cat-ancestor {
@@ -375,6 +347,7 @@ $admin: false !default;
   }
   @content;
 }
+
 @function str-replace($string, $search, $replace: "") {
   $index: str-index($string, $search);
 
@@ -575,7 +548,7 @@ $admin: false !default;
   $checkbox-width: 20px
 ) {
   .wpcf7-form {
-    @include appDir(direction, ltr, direction, rtl);
+    @include appDirValue(direction, ltr, rtl);
     .form-group {
       margin-bottom: $field-margin-between-rows;
       @include media(">bootstrap-sm") {
@@ -592,11 +565,11 @@ $admin: false !default;
         }
         @include media(">=big-phone") {
           &.row-first {
-            @include appDir(
-              margin-right,
-              #{$field-margin-between-cols - (2 * $field-border-width)},
-              margin-left,
-              $field-margin-between-cols
+            @include appDirAuto(
+              $margin-end: #{$field-margin-between-cols -
+                (
+                  2 * $field-border-width,
+                )}
             );
           }
         }
@@ -619,8 +592,8 @@ $admin: false !default;
           font-size: $field-font-size;
           transition: all 0.3s ease-in-out;
           color: $field-color;
-          @include appDir(direction, ltr, direction, rtl);
-          @include appDir(text-align, left, text-align, right);
+          @include appDirValue(direction, ltr, rtl);
+          @include appDirAuto($text-align: start);
           &::placeholder {
             color: $field-placeholder-color;
           }
@@ -665,7 +638,7 @@ $admin: false !default;
           border-top: 7px solid $field-placeholder-color;
           position: absolute;
           top: $field-min-height * 0.5;
-          @include appDir(right, 1px, left, 1px);
+          @include appDirAuto($end, 1px);
           content: "";
           z-index: 6;
         }
@@ -706,7 +679,7 @@ $admin: false !default;
             justify-content: flex-start;
             align-items: center;
             input {
-              @include appDir(margin-right, 20px, margin-left, 20px);
+              @include appDirAuto($margin-end: 20px);
             }
             span {
               @include media(">768px") {
@@ -757,7 +730,7 @@ $admin: false !default;
           color: $icon-color;
           position: absolute;
           top: $icon-top;
-          @include appDir(left, -$list-padding, right, -$list-padding);
+          @include appDirAuto($start: -$list-padding);
         }
       }
     }

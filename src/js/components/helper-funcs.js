@@ -77,7 +77,6 @@ export const invertColor = (hex, bw) => {
 };
 
 export const hideOnClickOutside = (element, callback, check) => {
-  console.log(check);
   const outsideClickListener = (event) => {
     if (!element.contains(event.target) && check) {
       callback();
