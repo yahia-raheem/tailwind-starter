@@ -77,7 +77,8 @@ export const stylePurge = () => {
             "dist/js/**/*.js",
             "!dist/styleguide.html",
           ],
-          defaultExtractor: (content) => content.match(/[\w-/:\[\]\%]+(?<!:)/g) || [],
+          defaultExtractor: (content) =>
+            content.match(/[\w-/:\[\]\%]+(?<!:)/g) || [],
           safelist: {
             standard: [...safelist.whitelist],
             deep: [...safelist.whitelistPatterns],
@@ -136,6 +137,14 @@ export const html = () => {
     .pipe(dest("dist"));
 };
 
+export const htmlrtl = () => {
+  return src(["dist/*.html", "!dist/styleguide.html", "!dist/*-rtl.html"])
+  .pipe(replace('bundle.css', 'bundle-rtl.css'))
+  .pipe(replace('bundle.js', 'bundle-rtl.js'))
+  .pipe(rename({suffix: "-rtl"}))
+  .pipe(dest("dist"))
+}
+
 export const images = () => {
   return src("src/images/**/*.{jpg,jpeg,png,svg,gif}")
     .pipe(
@@ -193,39 +202,42 @@ export const styleGuide = (done) => {
 };
 
 export const genCritical = (cb) => {
-  return src(["dist/*.html", "!dist/styleguide.html"])
+  return src(["dist/*.html", "!dist/styleguide.html", "!dist/*-rtl.html"])
     .pipe(
       critical({
         base: "dist/",
         inline: true,
         css: ["dist/css/bundle.css"],
-        dimensions: CRITICALSIZES
+        dimensions: CRITICALSIZES,
       })
     )
     .on("error", (err) => {
       console.log(err);
     })
-    .pipe(dest("dist/critical/ltr"));
+    .pipe(dest("dist"));
 };
 export const genCriticalRtl = () => {
-  return src(["dist/*.html", "!dist/styleguide.html"])
+  return src(["dist/*-rtl.html"])
     .pipe(
       critical({
         base: "dist/",
         inline: true,
         css: ["dist/css/bundle-rtl.css"],
-        dimensions: CRITICALSIZES
+        dimensions: CRITICALSIZES,
       })
     )
     .on("error", (err) => {
       console.log(err);
     })
-    .pipe(dest("dist/critical/rtl"));
+    .pipe(dest("dist"));
 };
 
 export const server = (done) => {
   browser.init({
-    server: "dist",
+    server: {
+      baseDir: "dist",
+      directory: true,
+    },
     port: 3000,
   });
   done();
@@ -271,7 +283,7 @@ export const watchForChanges = () => {
   );
   watch("./src/html/**/*.html").on(
     "all",
-    series(html, styles, postStyles, reload)
+    series(html, htmlrtl, styles, postStyles, reload)
   );
   watch("src/images/**/*.{jpg,jpeg,png,svg,gif}").on(
     "all",
@@ -284,6 +296,7 @@ export const dev = series(
   clean,
   parallel(styles, copy, scripts, images),
   html,
+  htmlrtl,
   postStyles,
   styleGuide,
   server,
@@ -294,6 +307,7 @@ export const build = series(
   scripts,
   parallel(styles, copy, images),
   html,
+  htmlrtl,
   postStyles,
   styleGuide,
   stylePurge,
