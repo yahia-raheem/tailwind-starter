@@ -86,7 +86,7 @@ npm start
 ```sh
 npm run build
 ```
-5. running `npm run start` will open a window with the directory structure of the dist folder just click on the file you want to view
+5. running `npm start` will open a window with the directory structure of the dist folder just click on the file you want to view
 
 
 
