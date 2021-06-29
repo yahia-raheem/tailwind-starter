@@ -141,6 +141,7 @@ export const htmlrtl = () => {
   return src(["dist/*.html", "!dist/styleguide.html", "!dist/*-rtl.html"])
   .pipe(replace('bundle.css', 'bundle-rtl.css'))
   .pipe(replace('bundle.js', 'bundle-rtl.js'))
+  .pipe(replace('dir="ltr"', 'dir="rtl"'))
   .pipe(rename({suffix: "-rtl"}))
   .pipe(dest("dist"))
 }
