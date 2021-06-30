@@ -16,6 +16,7 @@ import cssnano from "cssnano";
 import Fiber from "fibers";
 import purgecss from "gulp-purgecss";
 import safelist from "./purgecss.safelist";
+import ignoreList from "./critical.safelist";
 import tailwindcss from "tailwindcss";
 import browser from "browser-sync";
 import imagemin from "gulp-imagemin";
@@ -25,6 +26,7 @@ import rename from "gulp-rename";
 import fs from "fs";
 import yaml from "js-yaml";
 import scrape from "website-scraper";
+import flatten from "gulp-flatten";
 
 const critical = require("critical").stream;
 
@@ -32,8 +34,16 @@ const PRODUCTION = yargs.argv.prod;
 sass.compiler = require("sass");
 
 // Load settings from settings.yml
-const { SIZES, CRITICALSIZES, SCRAPPEREXTRACT, SCRAPPERLINK, GENIMAGESIZES } =
-  loadConfig();
+const {
+  SIZES,
+  CRITICALSIZES,
+  SCRAPPEREXTRACT,
+  SCRAPPERLINK,
+  GENIMAGESIZES,
+  GENCRITICAL,
+  BUILDBUNDLE,
+  BROWSERSYNC
+} = loadConfig();
 
 function loadConfig() {
   let ymlFile = fs.readFileSync("config.yml", "utf8");
@@ -58,11 +68,11 @@ export const styles = () => {
     .pipe(gulpif(!PRODUCTION, sourcemaps.init()))
     .pipe(sass({ fiber: Fiber }).on("error", sass.logError))
     .pipe(gulpif(!PRODUCTION, sourcemaps.write()))
-    .pipe(dest("dist/css"));
+    .pipe(dest("dist/assets/css"));
 };
 
 export const postStyles = () => {
-  return src(["dist/css/bundle.css", "dist/css/bundle-rtl.css"])
+  return src(["dist/assets/css/bundle.css", "dist/assets/css/bundle-rtl.css"])
     .pipe(gulpif(!PRODUCTION, sourcemaps.init({ loadMaps: true })))
     .pipe(
       gulpif(
@@ -78,18 +88,18 @@ export const postStyles = () => {
       )
     )
     .pipe(gulpif(!PRODUCTION, sourcemaps.write()))
-    .pipe(dest("dist/css"));
+    .pipe(dest("dist/assets/css"));
 };
 
 export const stylePurge = () => {
-  return src(["dist/css/bundle.css", "dist/css/bundle-rtl.css"])
+  return src(["dist/assets/css/bundle.css", "dist/assets/css/bundle-rtl.css"])
     .pipe(
       gulpif(
         PRODUCTION,
         purgecss({
           content: [
             "dist/**/*.html",
-            "dist/js/**/*.js",
+            "dist/assets/js/**/*.js",
             "!dist/styleguide.html",
           ],
           defaultExtractor: (content) =>
@@ -101,7 +111,7 @@ export const stylePurge = () => {
         })
       )
     )
-    .pipe(dest("dist/css"));
+    .pipe(dest("dist/assets/css"));
 };
 
 export const scripts = () => {
@@ -130,34 +140,41 @@ export const scripts = () => {
         externals: {},
       })
     )
-    .pipe(dest("dist/js"));
+    .pipe(dest("dist/assets/js"));
 };
 
 export const copy = () => {
   return src([
     "src/**/*",
-    "!src/{images,js,scss,html}",
-    "!src/{images,js,scss,html}/**/*",
+    "!src/{images,js,scss,html, styleguide}",
+    "!src/{images,js,scss,html, styleguide}/**/*",
   ]).pipe(dest("dist"));
 };
 
 export const html = () => {
-  return src(["src/html/*.html", "!src/html/*.part.html"])
+  return src(["src/html/**/*.html", "!src/html/**/*.part.html"])
     .pipe(
       fileinclude({
         prefix: "@@",
         basepath: "@file",
       })
     )
+    .pipe(gulpif(PRODUCTION, flatten()))
     .pipe(dest("dist"));
 };
 
 export const htmlrtl = () => {
-  return src(["dist/*.html", "!dist/styleguide.html", "!dist/*-rtl.html"])
+  return src(["dist/**/*.html", "!dist/styleguide.html", "!dist/**/*-rtl.html"])
     .pipe(replace("bundle.css", "bundle-rtl.css"))
     .pipe(replace("bundle.js", "bundle-rtl.js"))
     .pipe(replace('dir="ltr"', 'dir="rtl"'))
     .pipe(rename({ suffix: "-rtl" }))
+    .pipe(dest("dist"));
+};
+
+export const fluffHtml = () => {
+  return src(["dist/**/*.html", "!dist/styleguide.html"])
+    .pipe(replace("/assets", "assets"))
     .pipe(dest("dist"));
 };
 
@@ -176,7 +193,7 @@ export const images = () => {
         ])
       )
     )
-    .pipe(dest("dist/images"));
+    .pipe(dest("dist/assets/images"));
 };
 
 export const imagesGen = (cb) => {
@@ -201,7 +218,7 @@ export const imagesGen = (cb) => {
           ])
         )
       )
-      .pipe(dest("dist/images"));
+      .pipe(dest("dist/assets/images"));
   });
   cb();
 };
@@ -218,13 +235,16 @@ export const styleGuide = (done) => {
 };
 
 export const genCritical = (cb) => {
-  return src(["dist/*.html", "!dist/styleguide.html", "!dist/*-rtl.html"])
+  return src(["dist/**/*.html", "!dist/styleguide.html", "!dist/**/*-rtl.html"])
     .pipe(
       critical({
         base: "dist/",
         inline: true,
-        css: ["dist/css/bundle.css"],
+        css: ["dist/assets/css/bundle.css"],
         dimensions: CRITICALSIZES,
+        ignore: {
+          rule: ignoreList.ignorePatterns,
+        },
       })
     )
     .on("error", (err) => {
@@ -233,13 +253,16 @@ export const genCritical = (cb) => {
     .pipe(dest("dist"));
 };
 export const genCriticalRtl = () => {
-  return src(["dist/*-rtl.html"])
+  return src(["dist/**/*-rtl.html"])
     .pipe(
       critical({
         base: "dist/",
         inline: true,
-        css: ["dist/css/bundle-rtl.css"],
+        css: ["dist/assets/css/bundle-rtl.css"],
         dimensions: CRITICALSIZES,
+        ignore: {
+          rule: ignoreList.ignorePatterns,
+        },
       })
     )
     .on("error", (err) => {
@@ -252,8 +275,12 @@ export const server = (done) => {
   browser.init({
     server: {
       baseDir: "dist",
-      directory: true,
+      directory: BROWSERSYNC.directory,
+      routes: {
+        "/assets": "assets",
+      },
     },
+    tunnel: BROWSERSYNC.tunnel,
     port: 3000,
   });
   done();
@@ -273,8 +300,16 @@ export const compress = () => {
     "!bundled{,/**}",
     "!src{,/**}",
     "!.babelrc",
+    "!config.yml",
+    "!tailwind.config.js",
+    "!README.md",
     "!.gitignore",
     "!gulpfile.babel.js",
+    "!critical.safelist.js",
+    "!LICENSE",
+    "!.github{,/**}",
+    "!CODE_OF_CONDUCT.md",
+    "!purgecss.safelist.js",
     "!package.json",
     "!package-lock.json",
   ])
@@ -341,12 +376,13 @@ export const build = series(
   gulpTaskIf(() => !GENIMAGESIZES, images),
   html,
   htmlrtl,
+  fluffHtml,
   postStyles,
   styleGuide,
   stylePurge,
-  genCritical,
-  genCriticalRtl,
+  gulpTaskIf(() => GENCRITICAL, genCritical),
+  gulpTaskIf(() => GENCRITICAL, genCriticalRtl),
   gulpTaskIf(() => SCRAPPEREXTRACT, extractClean),
-  compress
+  gulpTaskIf(() => BUILDBUNDLE, compress)
 );
 export default dev;

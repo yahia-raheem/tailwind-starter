@@ -12,6 +12,11 @@ CRITICALSIZES:
   - width: 1366
     height: 768
 
-SCRAPPEREXTRACT: false
+SCRAPPEREXTRACT: False
 SCRAPPERLINK: ""
-GENIMAGESIZES: false
+GENIMAGESIZES: False
+GENCRITICAL: True
+BUILDBUNDLE: True
+BROWSERSYNC:
+  tunnel: False
+  directory: True
