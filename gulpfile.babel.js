@@ -146,8 +146,8 @@ export const scripts = () => {
 export const copy = () => {
   return src([
     "src/**/*",
-    "!src/{images,js,scss,html, styleguide}",
-    "!src/{images,js,scss,html, styleguide}/**/*",
+    "!src/{images,js,scss,html,styleguide}",
+    "!src/{images,js,scss,html,styleguide}/**/*",
   ]).pipe(dest("dist"));
 };
 
