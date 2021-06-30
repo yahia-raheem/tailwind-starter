@@ -132,6 +132,7 @@ aside from integrating tailwind, this repo also includes some of my favourite cs
 - you can add regexp. to the critical.safelist.js to ignore them when generating critical css. the same goes for purgecss.safelist.js to avoid removing those classes when purging styles (maybe the html gets injected later or they keep getting removed for no apparent reason)
 
 - when working in an html file and you want to link to an image or css file or js file that also exists within the src folder then prefix it with `/assets`
+  - in other words: all of the project assets, aside from html, are compiled to a folder named `assets` in the dist folder. but then why the leading slash ? wouldn't that break the import ? (tldr: no, i resolve the slash in development and remove it in production to allow for nested routes) below is why i did this.
 
   - example: you want to add the `src/scss/bundle.css` file to the head .. you'd do it like this `src="/assets/css/bundle.css"` (note the leading slash). so what happened here ? first of all ofcourse the scss files is compiled to css, hence the `/css/` part .. but i wanted to allow people to add folders to the html and route to them automatically if they want
 
@@ -144,7 +145,7 @@ aside from integrating tailwind, this repo also includes some of my favourite cs
       - service-single.html
   ```
 
-  normally you can't work with the above example because service-single.html can't have the same header and footer as the rest (since it is not on the same level as `index.html` for example so all of its imports have to go one level up `../css/bundle.css` for example) but i wanted people to be able to create nested routes if they want .. so i resolve the import of `/assets` to the assets folder (from browser-sync). so then no matter where you are in the src folder you can always import any asset (css, js, image) by prefixing the import with `/assets`. also i remove the leading slash in production and i flatten all the html files in the src direectory to avoid import issues (which means you have to keep all of the file names unique so that they won't get overwritten)
+  normally you can't work with the above example because service-single.html can't have the same header and footer as the rest (since it is not on the same level as `index.html` for example so all of its imports have to go one level up EX: `../css/bundle.css`) but i wanted people to be able to create nested routes if they want .. so i resolve the import of `/assets` to the assets folder (from browser-sync). so then no matter where you are in the src folder you can always import any asset (css, js, image) by prefixing the import with `/assets`. also i remove the leading slash in production and i flatten all the html files in the src direectory to avoid import issues (which means you have to keep all of the file names unique so that they won't get overwritten)
 
 <!-- ROADMAP -->
 
