@@ -24,6 +24,7 @@ import imageResize from "gulp-image-resize";
 import rename from "gulp-rename";
 import fs from "fs";
 import yaml from "js-yaml";
+import scrape from "website-scraper";
 
 const critical = require("critical").stream;
 
@@ -31,12 +32,26 @@ const PRODUCTION = yargs.argv.prod;
 sass.compiler = require("sass");
 
 // Load settings from settings.yml
-const { SIZES, CRITICALSIZES } = loadConfig();
+const { SIZES, CRITICALSIZES, SCRAPPEREXTRACT, SCRAPPERLINK, GENIMAGESIZES } =
+  loadConfig();
 
 function loadConfig() {
   let ymlFile = fs.readFileSync("config.yml", "utf8");
   return yaml.load(ymlFile);
 }
+
+export const extractHtml = (c) => {
+  return scrape(
+    {
+      urls: [SCRAPPERLINK],
+      directory: "dist/extracted",
+      recursive: true,
+      maxRecursiveDepth: 2,
+      sources: [{}],
+    },
+    c
+  );
+};
 
 export const styles = () => {
   return src(["src/scss/bundle.scss", "src/scss/bundle-rtl.scss"])
@@ -139,12 +154,12 @@ export const html = () => {
 
 export const htmlrtl = () => {
   return src(["dist/*.html", "!dist/styleguide.html", "!dist/*-rtl.html"])
-  .pipe(replace('bundle.css', 'bundle-rtl.css'))
-  .pipe(replace('bundle.js', 'bundle-rtl.js'))
-  .pipe(replace('dir="ltr"', 'dir="rtl"'))
-  .pipe(rename({suffix: "-rtl"}))
-  .pipe(dest("dist"))
-}
+    .pipe(replace("bundle.css", "bundle-rtl.css"))
+    .pipe(replace("bundle.js", "bundle-rtl.js"))
+    .pipe(replace('dir="ltr"', 'dir="rtl"'))
+    .pipe(rename({ suffix: "-rtl" }))
+    .pipe(dest("dist"));
+};
 
 export const images = () => {
   return src("src/images/**/*.{jpg,jpeg,png,svg,gif}")
@@ -164,32 +179,32 @@ export const images = () => {
     .pipe(dest("dist/images"));
 };
 
-// export const images = (cb) => {
-//   SIZES.forEach((size) => {
-//     src("src/images/**/*.{jpg,jpeg,png,svg,gif}")
-//       .pipe(imageResize({ width: size }))
-//       .pipe(
-//         rename(function (path) {
-//           path.basename = `${path.basename}@${size}w`;
-//         })
-//       )
-//       .pipe(
-//         gulpif(
-//           PRODUCTION,
-//           imagemin([
-//             imagemin.gifsicle({ interlaced: true }),
-//             imagemin.mozjpeg({ quality: 75, progressive: true }),
-//             imagemin.optipng({ optimizationLevel: 5 }),
-//             imagemin.svgo({
-//               plugins: [{ removeViewBox: true }, { cleanupIDs: false }],
-//             }),
-//           ])
-//         )
-//       )
-//       .pipe(dest("dist/images"));
-//   });
-//   cb();
-// };
+export const imagesGen = (cb) => {
+  SIZES.forEach((size) => {
+    src("src/images/**/*.{jpg,jpeg,png,svg,gif}")
+      .pipe(imageResize({ width: size }))
+      .pipe(
+        rename(function (path) {
+          path.basename = `${path.basename}@${size}w`;
+        })
+      )
+      .pipe(
+        gulpif(
+          PRODUCTION,
+          imagemin([
+            imagemin.gifsicle({ interlaced: true }),
+            imagemin.mozjpeg({ quality: 75, progressive: true }),
+            imagemin.optipng({ optimizationLevel: 5 }),
+            imagemin.svgo({
+              plugins: [{ removeViewBox: true }, { cleanupIDs: false }],
+            }),
+          ])
+        )
+      )
+      .pipe(dest("dist/images"));
+  });
+  cb();
+};
 
 export const styleGuide = (done) => {
   sherpa(
@@ -249,6 +264,7 @@ export const reload = () => {
 };
 
 export const clean = () => del(["dist"]);
+export const extractClean = () => del(["dist/extracted"]);
 
 export const compress = () => {
   return src([
@@ -293,20 +309,36 @@ export const watchForChanges = () => {
   watch("src/styleguide/**").on("all", series(styleGuide, reload));
 };
 
+const gulpTaskIf = (condition, task) => {
+  task = series(task); // make sure we have a function that takes callback as first argument
+  return (cb) => {
+    if (condition()) {
+      task(cb);
+    } else {
+      cb();
+    }
+  };
+};
+
 export const dev = series(
   clean,
-  parallel(styles, copy, scripts, images),
+  parallel(styles, copy, scripts),
+  gulpTaskIf(() => GENIMAGESIZES, imagesGen),
+  gulpTaskIf(() => !GENIMAGESIZES, images),
   html,
   htmlrtl,
   postStyles,
   styleGuide,
-  server,
-  watchForChanges
+  server
+  // watchForChanges
 );
 export const build = series(
   clean,
+  gulpTaskIf(() => SCRAPPEREXTRACT, extractHtml),
   scripts,
-  parallel(styles, copy, images),
+  parallel(styles, copy),
+  gulpTaskIf(() => GENIMAGESIZES, imagesGen),
+  gulpTaskIf(() => !GENIMAGESIZES, images),
   html,
   htmlrtl,
   postStyles,
@@ -314,6 +346,7 @@ export const build = series(
   stylePurge,
   genCritical,
   genCriticalRtl,
+  gulpTaskIf(() => SCRAPPEREXTRACT, extractClean),
   compress
 );
 export default dev;
