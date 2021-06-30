@@ -329,8 +329,8 @@ export const dev = series(
   htmlrtl,
   postStyles,
   styleGuide,
-  server
-  // watchForChanges
+  server,
+  watchForChanges
 );
 export const build = series(
   clean,
