@@ -42,6 +42,8 @@ Current features:
 - dart-sass support
 - tree-shaking
 - auto-prefixing
+- postcss optimizations
+- html minification
 - sass mixins, and ES6 helper functions for various tasks such as triggereing callback functions on intersection observer events, and keeping aspect ratio dynamically, and more.
 - basic navbar and sidebar with dropdown support
 - image optimization (tweeking can be done from the gulp file)
@@ -50,6 +52,7 @@ Current features:
 - working jit implementation (tailwind jit)
 - responsive image generation (using gulp-image-resize. check their website for installation instructions and the steps section for how to use it)
 - generate and inline critical css for both rtl and ltr with viewport control
+- dynamic routing in development mode (more in the usage section)
 
 ### Built With
 
@@ -116,6 +119,7 @@ Within the config.yml file you'll find some configurable defaults. below are wha
 - BUILDBUNDLE: builds an output theme that can be given to clients (aka: no src files, no gulp or gulp related files, and no package.json or anything similar) if you'd like to not submit your src project
 
 - BROWSERSYNC: contains two options: `tunnel`: possible values are `True` and `False`. it exposes your local dedvelopment environment to the internet (maybe your team leader wants to view the project on his phone right now ... we've all been there). the other option is `directory`: possible values are `True` and `False`. it makes the server open a file browser within the dist folder so that you can select the file you want to view. if set to false then the server will look for an `index.html` file to open instead
+- MINIFYHTMLOPTIONS: all options passed to this config point are passed to gulp-htmlmin which in turn is passed to html-minifier. see this [link](https://github.com/kangax/html-minifier) for the available options.
 
 <!-- USAGE EXAMPLES -->
 

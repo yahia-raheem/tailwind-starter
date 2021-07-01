@@ -1,6 +1,6 @@
 {
   "name": "starter_theme_tailwind",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "my tailwind starter theme",
   "main": "index.js",
   "scripts": {
@@ -50,6 +50,7 @@
     "webpack-stream": "^5.2.1",
     "yargs": "^15.3.1",
     "website-scraper": "^4.2.3",
-    "gulp-flatten": "^0.4.0"
+    "gulp-flatten": "^0.4.0",
+    "gulp-htmlmin": "^5.0.1"
   }
 }

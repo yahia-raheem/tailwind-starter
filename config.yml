@@ -15,8 +15,11 @@ CRITICALSIZES:
 SCRAPPEREXTRACT: False
 SCRAPPERLINK: ""
 GENIMAGESIZES: False
-GENCRITICAL: True
+GENCRITICAL: False
 BUILDBUNDLE: True
 BROWSERSYNC:
   tunnel: False
   directory: True
+MINIFYHTMLOPTIONS:
+  collapseWhitespace: False
+  preserveLineBreaks: False

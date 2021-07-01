@@ -27,6 +27,7 @@ import fs from "fs";
 import yaml from "js-yaml";
 import scrape from "website-scraper";
 import flatten from "gulp-flatten";
+import htmlmin from "gulp-htmlmin";
 
 const critical = require("critical").stream;
 
@@ -42,7 +43,8 @@ const {
   GENIMAGESIZES,
   GENCRITICAL,
   BUILDBUNDLE,
-  BROWSERSYNC
+  BROWSERSYNC,
+  MINIFYHTMLOPTIONS
 } = loadConfig();
 
 function loadConfig() {
@@ -146,8 +148,8 @@ export const scripts = () => {
 export const copy = () => {
   return src([
     "src/**/*",
-    "!src/{images,js,scss,html,styleguide}",
-    "!src/{images,js,scss,html,styleguide}/**/*",
+    "!src/{images,js,scss,html, styleguide}",
+    "!src/{images,js,scss,html, styleguide}/**/*",
   ]).pipe(dest("dist"));
 };
 
@@ -175,6 +177,7 @@ export const htmlrtl = () => {
 export const fluffHtml = () => {
   return src(["dist/**/*.html", "!dist/styleguide.html"])
     .pipe(replace("/assets", "assets"))
+    .pipe(htmlmin({...MINIFYHTMLOPTIONS}))
     .pipe(dest("dist"));
 };
 
@@ -306,9 +309,6 @@ export const compress = () => {
     "!.gitignore",
     "!gulpfile.babel.js",
     "!critical.safelist.js",
-    "!LICENSE",
-    "!.github{,/**}",
-    "!CODE_OF_CONDUCT.md",
     "!purgecss.safelist.js",
     "!package.json",
     "!package-lock.json",
