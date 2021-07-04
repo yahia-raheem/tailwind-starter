@@ -165,14 +165,30 @@ this section is not complete and i'll try to dump as much time as i can in it in
   import { aspectRatioHelper } from "./components/helpers";
 
   document.addEventListener("DOMContentLoaded", () => {
-    ...
     aspectRatioHelperelper();
+    ...
   });
   ```
   ```html
   <div data-aspectRatio="16/9">
   ```
+- Magnification: adds a magnifier glass to images (based on the w3schools example )
+  - add the js helper, scss mixin, and html attribute that you'll find below. the scss mixin takes a `$size`(`100px` by default), and `$shape` (`'circle'` by default .. any other value makes it a square for now).
+  ```js
+  // src/js/bundle.js
+  import { magnifyImages } from "./components/helpers";
 
+  document.addEventListener("DOMContentLoaded", () => {
+    magnifyImages();
+    ...
+  });
+  ```
+  ```html
+  <div data-magnify>
+  ```
+  ```scss
+  @include h.magnifier($size, $shape);
+  ```
 #TODO
 
 <!-- ROADMAP -->
