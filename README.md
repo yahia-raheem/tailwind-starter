@@ -184,9 +184,9 @@ this section is not complete and i'll try to dump as much time as i can in it in
   });
   ```
   ```html
-<div class="img-container">
-  <img src="/assets/images/.." data-magnify>
-</div>
+    <div class="img-container">
+        <img src="/assets/images/.." data-magnify>
+    </div>
   ```
   ```scss
   @include h.magnifier($size, $shape);
