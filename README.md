@@ -34,7 +34,7 @@
 
 ## About The Project
 
-This is my starting point for front end development. usually i find some of these features in another starter template. but never all of them at the same time. so i decided to make my own starter template and everyone is welcome to request features or contribute to it in any way he likes.
+This is my starting point for front end development. usually i find some of these features in another starter template. but never all of them at the same time. so i decided to make my own starter template and everyone is welcome to request features or contribute to it in any way he/she likes.
 
 Current features:
 
@@ -55,8 +55,6 @@ Current features:
 - dynamic routing in development mode (more in the usage section)
 
 ### Built With
-
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
 - [Gulp](https://gulpjs.com/)
 - [Tailwind](https://tailwindcss.com/)
@@ -92,13 +90,11 @@ npm install
 npm start
 ```
 
-4. run the following command for production (you'll find a bundle with the necissary files in the bundled folder or you could delete it and the node_modules folders if you'd like to keep the src folder in production)
+4. run the following command for production
 
 ```sh
 npm run build
 ```
-
-5. running `npm start` will open a window with the directory structure of the dist folder just click on the file you want to view
 
 ## Configuration
 
@@ -129,27 +125,13 @@ aside from integrating tailwind, this repo also includes some of my favourite cs
 
 - if you want to use the responsive image generator make sure you follow the `imagemagic` and `graphicsmagic` packages installation instructions from the `gulp-image-resize` page
 
-- tailwind debug screens is installed (adds small text to the bottom left corner of the screen with the current breakpoint) to use it add the `debug-screens` class to the body tag. don't forget to remove it before production
-
 - when to use the website-scrapper task ? well if, for example, you have a wordpress installation and some of your styles are styling plugins installed outside of your theme then how can you treeshake your project without access to their html ? what you have to do in this case is add your local development project's link in the SCRAPPERLINK variable in `config.yml` and set `SCRAPPEREXTRACT: true`. this will then extract the html from your local server and store it within the dist folder for the treeshaking function to find. and don't worry the extracted html is deleted automatically so you don't even have to see it.
 
 - you can add regexp. to the critical.safelist.js to ignore them when generating critical css. the same goes for purgecss.safelist.js to avoid removing those classes when purging styles (maybe the html gets injected later or they keep getting removed for no apparent reason)
 
-- when working in an html file and you want to link to an image or css file or js file that also exists within the src folder then prefix it with `/assets`
-  - in other words: all of the project assets, aside from html, are compiled to a folder named `assets` in the dist folder. but then why the leading slash ? wouldn't that break the import ? (tldr: no, i resolve the slash in development and remove it in production to allow for nested routes) below is why i did this.
+- you can link to assets (css, js, images) by prefixing the import with `/assets/` (notice the leading slash). the import then is resolved automatically no matter how deep your html file lives. also the leading slash is removed in production
 
-  - example: you want to add the `src/scss/bundle.css` file to the head .. you'd do it like this `src="/assets/css/bundle.css"` (note the leading slash). so what happened here ? first of all ofcourse the scss files is compiled to css, hence the `/css/` part .. but i wanted to allow people to add folders to the html and route to them automatically if they want
-
-  ```yml
-  html:
-    - index.html
-    - about.html
-    - services.html
-    - services
-      - service-single.html
-  ```
-
-  normally you can't work with the above example because service-single.html can't have the same header and footer as the rest (since it is not on the same level as `index.html` for example so all of its imports have to go one level up EX: `../css/bundle.css`) but i wanted people to be able to create nested routes if they want .. so i resolve the import of `/assets` to the assets folder (from browser-sync). so then no matter where you are in the src folder you can always import any asset (css, js, image) by prefixing the import with `/assets`. also i remove the leading slash in production and i flatten all the html files in the src direectory to avoid import issues (which means you have to keep all of the file names unique so that they won't get overwritten)
+- basic support for nested routing as follows. you can create as many folders within the `src/html` folder as you like, and as long as the folder contains a file not prefixed with `[filename].part.html` then it will be copied to the dist folder to allow for a nested routing behaviour out of the box .. for example if youu create a folder called services within `src/html` and within the folder created a file called `single-service.html` then the following route is resolved to this file `[domain]/services/single-service.html`. this behaviour is removed however in production and all html files will be flattened. which means that you have to keep your html file names unique. so for my previous example, in production you'll find the file `single-service.html` at dist root directly.
 
 <!-- ROADMAP -->
 

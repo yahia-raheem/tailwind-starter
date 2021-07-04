@@ -177,6 +177,7 @@ export const htmlrtl = () => {
 export const fluffHtml = () => {
   return src(["dist/**/*.html", "!dist/styleguide.html"])
     .pipe(replace("/assets", "assets"))
+    .pipe(replace("debug-screens", ""))
     .pipe(htmlmin({...MINIFYHTMLOPTIONS}))
     .pipe(dest("dist"));
 };

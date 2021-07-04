@@ -9,7 +9,7 @@
   overflow-x: hidden;
   transition: 0.5s;
   .sidebar-header {
-    background-color: $primary;
+    background-color: theme('colors.primary');
     position: relative;
     padding: 15px 40px;
     display: flex;

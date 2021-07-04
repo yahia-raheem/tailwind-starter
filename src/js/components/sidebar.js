@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
           item.classList.add('child-menu-opened');
           submenu.classList.add("opened");
-          submenu.style.maxHeight = `${itemsNum * 64}px`;
+          submenu.style.maxHeight = `${submenu.scrollHeight}px`;
         }
       }
     });

@@ -50,7 +50,7 @@ $menu-border-radius: 5px;
     z-index: 1;
     list-style: none;
     padding: 0;
-    color: $body-color;
+    color: theme('textColor.primary');
     display: none;
     border-radius: $menu-border-radius;
     &::after {
@@ -116,7 +116,7 @@ $menu-border-radius: 5px;
       transform: translateY(-50%);
       @include h.appDirAuto($end: 5px);
       content: "\002B";
-      color: $secondary;
+      color: theme('colors.secondary');
     }
     .menu-item-has-children {
       width: 100%;

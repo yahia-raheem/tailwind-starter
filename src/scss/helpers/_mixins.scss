@@ -3,7 +3,6 @@
 @use "sass:meta";
 @use "queries" as *;
 $dir: "ltr" !default;
-@use "../bootvars" as *;
 
 @mixin arrow(
   $direction,
@@ -184,7 +183,7 @@ $dir: "ltr" !default;
     transition: all 0.3s;
     &.current {
       color: white;
-      background-color: $primary;
+      background-color: theme('colors.primary');
       border-radius: 100px;
     }
     &.next {
@@ -211,7 +210,7 @@ $dir: "ltr" !default;
     }
     &:hover {
       text-decoration: none;
-      border-color: $primary;
+      border-color: theme('colors.primary');
     }
   }
 }
@@ -315,7 +314,7 @@ $dir: "ltr" !default;
       &.current-cat,
       &.current-cat-ancestor {
         &::before {
-          color: $primary;
+          color: theme('colors.primary');
         }
         & > .children {
           display: block;
@@ -328,7 +327,7 @@ $dir: "ltr" !default;
         }
       }
       &.current-cat > a {
-        color: $primary;
+        color: theme('colors.primary');
         font-weight: 600;
       }
       &.has-children {
@@ -599,7 +598,7 @@ $dir: "ltr" !default;
           }
           &:focus {
             outline: none;
-            border-color: $primary;
+            border-color: theme('colors.primary');
           }
           option:not(:first-of-type) {
             color: $field-color;
