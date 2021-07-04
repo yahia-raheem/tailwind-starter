@@ -1,3 +1,5 @@
+import { magnify } from "./helper-funcs";
+
 // trims strings to be as long as the provided length in the 'data-trim' attribute
 export const trimText = () => {
   const doTrim = document.querySelectorAll("[data-trim]");
@@ -163,6 +165,17 @@ export const aspectRatioHelper = () => {
     });
   }
 };
+
+// adds magnification lense to images
+export const magnifyImages = () => {
+  const images = document.querySelectorAll('[data-magnify]')
+  if (images.length > 0) {
+    images.forEach((el) => {
+      console.log('found it')
+      magnify(el, 3);
+    })
+  }
+}
 
 const detHeight = (aspectRatio, width) => {
   let data = aspectRatio.split("/");

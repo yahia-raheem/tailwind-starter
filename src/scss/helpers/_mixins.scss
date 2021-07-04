@@ -735,3 +735,17 @@ $dir: "ltr" !default;
     }
   }
 }
+
+@mixin magnifier($size: 100px, $shape: "circle") {
+  .img-magnifier-glass {
+    position: absolute;
+    border: 3px solid #000;
+    z-index: 10;
+    @if $shape == "circle" {
+      border-radius: 50%;
+    }
+    cursor: none;
+    width: $size;
+    height: $size;
+  }
+}

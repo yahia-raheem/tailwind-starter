@@ -26,6 +26,7 @@
   - [Installation](#installation)
 - [Configuration](#configuration)
 - [Usage](#usage)
+- [Helpers](#helpers)
 - [Roadmap](#roadmap)
 - [License](#license)
 - [Contact](#contact)
@@ -132,6 +133,47 @@ aside from integrating tailwind, this repo also includes some of my favourite cs
 - you can link to assets (css, js, images) by prefixing the import with `/assets/` (notice the leading slash). the import then is resolved automatically no matter how deep your html file lives. also the leading slash is removed in production
 
 - basic support for nested routing as follows. you can create as many folders within the `src/html` folder as you like, and as long as the folder contains a file not prefixed with `[filename].part.html` then it will be copied to the dist folder to allow for a nested routing behaviour out of the box .. for example if youu create a folder called services within `src/html` and within the folder created a file called `single-service.html` then the following route is resolved to this file `[domain]/services/single-service.html`. this behaviour is removed however in production and all html files will be flattened. which means that you have to keep your html file names unique. so for my previous example, in production you'll find the file `single-service.html` at dist root directly.
+
+- if you want to use a mixin from the mixins file in the helpers folder just prefix it with `h.` by default (change this prefix from the entry file if you like). this is usefull to provide a scope for you so that if you want to add your own scss mixins from a file you don't have to worry about duplicate names
+
+- take a look inside the html index file to get to know the way gulp file include works ... you can import files and use variables within these partials.
+  - the gulp html scripts ignore all html files ending in the following prefix `[name].part.html` so you can use that to create as many partials as you want and won't have to worry about cluttering your dist folder.
+
+<!-- HELPERS -->
+
+## Helpers
+
+this section is not complete and i'll try to dump as much time as i can in it in the future but feel free to explore the helpers folder within `src/scss` and the helpers js file within the `src/js/components` folder
+
+- Images:
+
+  - `img-container` class is a good image wrapper which pairs with some of the other functions in order for them to work.
+  - `bg-image` class: paired with `img-container` makes the image take the entirety of the wrapping box. this works well if you want to apply aspect ratio to images or add background images to divs (make sure to add `relative` class to the image wrapping element unless it's img-container)
+
+- Aspect Ratio:
+
+  - `box-ratio` mixin: use it like so (where `width` and `height` are numbers like `box-ratio(16,9)` for ex).
+
+  ```scss
+  @include h.box-ratio(width, height);
+  ```
+
+  - `aspectRatioHelper` es function: if you don't want to use the padding trick for aspect ratio you can use this function to determine the elements aspect ratio on the fly. use it like so. (data-aspectRatio="width/height")
+
+  ```js
+  // src/js/bundle.js
+  import { aspectRatioHelper } from "./components/helpers";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    ...
+    aspectRatioHelperelper();
+  });
+  ```
+  ```html
+  <div data-aspectRatio="16/9">
+  ```
+
+#TODO
 
 <!-- ROADMAP -->
 

@@ -299,20 +299,7 @@ export const extractClean = () => del(["dist/extracted"]);
 
 export const compress = () => {
   return src([
-    "**/*",
-    "!node_modules{,/**}",
-    "!bundled{,/**}",
-    "!src{,/**}",
-    "!.babelrc",
-    "!config.yml",
-    "!tailwind.config.js",
-    "!README.md",
-    "!.gitignore",
-    "!gulpfile.babel.js",
-    "!critical.safelist.js",
-    "!purgecss.safelist.js",
-    "!package.json",
-    "!package-lock.json",
+    "dist/**/*",
   ])
     .pipe(
       gulpif(
