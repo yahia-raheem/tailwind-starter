@@ -3,17 +3,6 @@ body {
   @include h.appDirValue(direction, ltr, rtl);
 }
 
-section {
-  padding: 50px 0;
-  background-color: #ffffff;
-  position: relative;
-  box-sizing: border-box;
-}
-
-.spacer {
-  flex: 1 1 auto;
-}
-
 .vail {
   position: absolute;
   top: 0;
@@ -42,7 +31,7 @@ section {
   overflow: hidden;
 }
 
-.clickable-image {
+.clickable-space {
   position: absolute;
   top: 0;
   left: 0;

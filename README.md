@@ -27,6 +27,8 @@
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [Helpers](#helpers)
+  - [Functions](#functions)
+  - [random](#random)
 - [Roadmap](#roadmap)
 - [License](#license)
 - [Contact](#contact)
@@ -145,6 +147,10 @@ aside from integrating tailwind, this repo also includes some of my favourite cs
 
 this section is not complete and i'll try to dump as much time as i can in it in the future but feel free to explore the helpers folder within `src/scss` and the helpers js file within the `src/js/components` folder
 
+## Functions
+
+a specific combination of scss, js, and html (or one or more of them) to provide a certain functionality. feel free to ignore all of what's down below if you have a better way to do it (or yyou know suggest your better way to help me out)
+
 - Images:
 
   - `img-container` class is a good image wrapper which pairs with some of the other functions in order for them to work.
@@ -172,6 +178,7 @@ this section is not complete and i'll try to dump as much time as i can in it in
   ```html
   <div data-aspectRatio="16/9">
   ```
+
 - Magnification: adds a magnifier glass to images (based on the w3schools example )
   - add the js helper, scss mixin, and html attribute that you'll find below. the scss mixin takes a `$size`(`100px` by default), and `$shape` (`'circle'` by default .. any other value makes it a square for now).
   ```js
@@ -191,6 +198,61 @@ this section is not complete and i'll try to dump as much time as i can in it in
   ```scss
   @include h.magnifier($size, $shape);
   ```
+- bi-directionality: the directionality of the content is controlled in various ways. but to ensure all of them work correctly please make sure that the body has a dir attribute with either `ltr` or `rtl` value.
+  - `appDirAuto` mixin: translates styles to left or right based on two keywords; start and end. look at the examples
+  ```scss
+  .example {
+    position: absolute;
+    @include h.appDirAuto($start: 10px);
+    @include h.appDirAuto($margin-end: 15px);
+    @include h.appDirAuto($text-aling: start);
+  }
+  ```
+  the above example will be translated to the following css codes
+
+  ```scss
+  // bundle.css
+  .example {
+    position: absolute;
+    left: 10px;
+    margin-right: 15px;
+    text-align: left;
+  }
+  ```
+  ```scss
+  // bundle-rtl.css
+  .example {
+    position: absolute;
+    right: 10px;
+    margin-left: 15px;
+    text-align: right;
+  }
+  ```
+  - `appDirValue` mixin: takes a tag that doesnt change in rtl mode but its value must change. the mixin takes the following arguments
+  ```scss
+  @include h.appDirValue(tag, ltr-value, rtl-value);
+  ```
+  ex:
+  ```scss
+  @include h.appDirValue(clip-path, polygon(0 0, 100% 0, 100% 85%, 0% 100%), polygon(0 0, 100% 0, 100% 100%, 0% 85%));
+  ```
+  - the tailwind way: the tailwind-rtl mixin is installed by default so 90% of the cases can be managed using their utility classes (go check them out [here](https://www.npmjs.com/package/tailwindcss-rtl) ). the other 10 percent (mainly space-x and transform stuff) can be solved using the tailwind-dir plugin (which is not used by default but but can be found [here](https://github.com/RonMelkhior/tailwindcss-dir))
+## Random
+
+random scss classes and mixins that do one off things.
+
+- `clickable-space` : previously `clickable-image` basically covers the space until the first parent with position relative and makes the entire space clickable. so add the class to an a tag obviously
+- `vail`: darkens images or spaces until the first parent with positon relative. helpful if you want to add a dark tint over photos maybe
+- `shadow-vail`: adds shadow around a box. a nice trick i found on stack overflow. basically it adds shadow that covers everything else aside from the box that has the class. use it to add a tint to everything around an open modal perhaps
+- `section`: the section mixin has some default padding and a white background. useful to define a section of the front-end. i normally use it like this
+```scss
+// src/scss/_entry.scss
+section {
+  @include h.section();
+}
+```
+- `sidebar__inner`: add a div with this class directly under the sidebar class of any sidebar to make the content of this sidebar sticky. aka it doesn't scroll until the content of the main section is done scrolling
+
 #TODO
 
 <!-- ROADMAP -->
