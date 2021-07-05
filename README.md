@@ -203,9 +203,7 @@ a specific combination of scss, js, and html (or one or more of them) to provide
   ```scss
   .example {
     position: absolute;
-    @include h.appDirAuto($start: 10px);
-    @include h.appDirAuto($margin-end: 15px);
-    @include h.appDirAuto($text-aling: start);
+    @include h.appDirAuto($start: 10px, $margin-end: 15px, $text-align: start);
   }
   ```
   the above example will be translated to the following css codes
