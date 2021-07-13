@@ -33,18 +33,18 @@ export const animateCssHelper = () => {
     elanimations.forEach((element) => {
       let animation = element.getAttribute("data-animate");
       if (
-        document.getElementsByTagName("html")[0].getAttribute("dir") == "ltr" &&
+        document.getElementsByTagName("html")[0].getAttribute("dir") === "ltr" &&
         (animation.includes("Left") || animation.includes("Right"))
       ) {
         animation = animation.includes("Left")
           ? animation.replace("Left", "Right")
           : animation.replace("Right", "Left");
       }
-      let delay = element.getAttribute("data-delay");
+      const delay = element.getAttribute("data-delay");
       elementObserver(doAnimation, {
-        animation: animation,
-        element: element,
-        delay: delay,
+        animation,
+        element,
+        delay,
       });
     });
   }

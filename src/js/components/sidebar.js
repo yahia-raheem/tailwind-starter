@@ -10,7 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
       e.stopPropagation();
       if (item.classList.contains("menu-item-has-children")) {
         const submenu = item.querySelector(".sub-menu");
-        const itemsNum = item.querySelectorAll(".menu-item").length;
         if (submenu.classList.contains("opened")) {
           item.classList.remove('child-menu-opened');
           submenu.classList.remove("opened");

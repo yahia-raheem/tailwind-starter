@@ -5,7 +5,7 @@ export const trimText = () => {
   const doTrim = document.querySelectorAll("[data-trim]");
   if (doTrim.length > 0) {
     doTrim.forEach((one) => {
-      var length = one.getAttribute("data-trim");
+      const length = one.getAttribute("data-trim");
       one.innerHTML =
         one.innerHTML.length > length
           ? one.innerHTML.substring(0, length) + "..."
@@ -43,10 +43,8 @@ export const mobileSheet = () => {
   const mobSheet = document.querySelectorAll("[data-mobilesheet]");
   if (mobSheet.length > 0) {
     mobSheet.forEach((one) => {
-      dict = one.getAttribute("data-mobilesheet");
-      data = JSON.parse(dict);
       one.style.transition = "height 0.5s, box-shadow 0.2s";
-      let buttons = one.querySelectorAll("[data-open]");
+      const buttons = one.querySelectorAll("[data-open]");
       if (buttons) {
         buttons.forEach((button) => {
           button.addEventListener("click", () => {
@@ -67,10 +65,10 @@ export const removeChild = () => {
   const removeChildTag = document.querySelectorAll("[data-removeChildTag]");
   if (removeChildTag.length > 0) {
     removeChildTag.forEach((one) => {
-      let tag = one.getAttribute("data-removeChildTag");
-      let b = one.getElementsByTagName(tag);
+      const tag = one.getAttribute("data-removeChildTag");
+      const b = one.getElementsByTagName(tag);
       while (b.length) {
-        let parent = b[0].parentNode;
+        const parent = b[0].parentNode;
         while (b[0].firstChild) {
           parent.insertBefore(b[0].firstChild, b[0]);
         }
@@ -85,11 +83,10 @@ export const cf7Select = () => {
   const selectInputs = document.querySelectorAll(".wpcf7 select");
   if (selectInputs.length > 0) {
     selectInputs.forEach((select) => {
-      if (select.value == "") {
+      if (select.value === "") {
         select.classList.add("untouched");
       }
       const changeEvent = (e) => {
-        console.log("fired");
         select.classList.remove("untouched");
         removeChangeEvent();
       };
@@ -115,9 +112,9 @@ export const addIcon = () => {
           iconId.split("-")[1]
         }`;
 
-        var xhttp = new XMLHttpRequest();
+        const xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function () {
-          if (this.readyState == 4 && this.status == 200) {
+          if (this.readyState === 4 && this.status === 200) {
             const resPure = JSON.parse(this.responseText).trim();
             const parentDiv = document.createElement("div");
             parentDiv.innerHTML = resPure;
@@ -150,16 +147,16 @@ export const aspectRatioHelper = () => {
   const aspectRatio = document.querySelectorAll("[data-aspectRatio]");
   if (aspectRatio.length > 0) {
     aspectRatio.forEach((one) => {
-      let width = one.offsetWidth;
-      let aspectRatio = one.getAttribute("data-aspectRatio");
-      let height = detHeight(aspectRatio, width);
+      const width = one.offsetWidth;
+      const aspectRatio = one.getAttribute("data-aspectRatio");
+      const height = detHeight(aspectRatio, width);
       one.style.height = `${height}px`;
     });
     window.addEventListener("resize", () => {
       aspectRatio.forEach((one) => {
-        let width = one.offsetWidth;
-        let aspectRatio = one.getAttribute("data-aspectRatio");
-        let height = detHeight(aspectRatio, width);
+        const width = one.offsetWidth;
+        const aspectRatio = one.getAttribute("data-aspectRatio");
+        const height = detHeight(aspectRatio, width);
         one.style.height = `${height}px`;
       });
     });
@@ -171,27 +168,28 @@ export const magnifyImages = () => {
   const images = document.querySelectorAll('[data-magnify]')
   if (images.length > 0) {
     images.forEach((el) => {
-      console.log('found it')
       magnify(el, 3);
     })
   }
 }
 
 const detHeight = (aspectRatio, width) => {
-  let data = aspectRatio.split("/");
-  let aspectWidth = data[0];
-  let aspectHeight = data[1];
-  let height =
+  const data = aspectRatio.split("/");
+  const aspectWidth = data[0];
+  const aspectHeight = data[1];
+  const height =
     (parseInt(width) * parseInt(aspectHeight)) / parseInt(aspectWidth);
   return height;
 };
 
 const openSheet = (element) => {
-  let buttons = element.querySelectorAll("[data-open]");
+  const buttons = element.querySelectorAll("[data-open]");
+  const data = element.getAttribute('data-mobilesheet');
   element.classList.add("shadow-vail", "open");
   element.style.height = data.expandedHeight;
   buttons.forEach((button) => {
     button.setAttribute("data-open", "true");
+    // eslint-disable-next-line no-unused-expressions
     data.removedClasses
       ? data.removedClasses.forEach((rclass) => {
           element
@@ -199,6 +197,7 @@ const openSheet = (element) => {
             .classList.remove(rclass.toRemove);
         })
       : null;
+    // eslint-disable-next-line no-unused-expressions
     data.addedClasses
       ? data.addedClasses.forEach((aclass) => {
           element
@@ -206,6 +205,7 @@ const openSheet = (element) => {
             .classList.add(aclass.toAdd);
         })
       : null;
+    // eslint-disable-next-line no-unused-expressions
     data.changedClasses
       ? data.changedClasses.forEach((cclass) => {
           element
@@ -221,11 +221,13 @@ const openSheet = (element) => {
 };
 
 const closeSheet = (element) => {
-  let buttons = element.querySelectorAll("[data-open]");
+  const buttons = element.querySelectorAll("[data-open]");
+  const data = element.getAttribute('data-mobilesheet');
   element.classList.remove("shadow-vail", "open");
   element.style.height = data.normalHeight;
   buttons.forEach((button) => {
     button.setAttribute("data-open", "false");
+    // eslint-disable-next-line no-unused-expressions
     data.removedClasses
       ? data.removedClasses.forEach((rclass) => {
           element
@@ -233,6 +235,7 @@ const closeSheet = (element) => {
             .classList.add(rclass.toRemove);
         })
       : null;
+    // eslint-disable-next-line no-unused-expressions
     data.addedClasses
       ? data.addedClasses.forEach((aclass) => {
           element
@@ -240,6 +243,7 @@ const closeSheet = (element) => {
             .classList.remove(aclass.toAdd);
         })
       : null;
+    // eslint-disable-next-line no-unused-expressions
     data.changedClasses
       ? data.changedClasses.forEach((cclass) => {
           element
